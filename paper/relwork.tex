@@ -1,0 +1,32 @@
+
+
+\section{Related work}
+
+
+In the BIP framework, DFinder~\cite{dfinder10} is a dedicated tool for invariant generation and deadlock-freedom detection.
+%
+DFinder computes the system invariant in a compositional manner:
+it first computes a component invariant over-approximating the reachable states of each component
+and then computes an interaction invariant over-approximating the global reachable states.
+The system invariant is then the conjunction of all component invariants and the interaction invariant.
+%
+Though being scalable for large system models,
+DFinder does not handle system models with data transfer,
+which hampers the practical application of DFinder and of the BIP framework,
+since data transfer is necessary and common in the design of real-life systems (e.g. message passing).
+%
+Besides, it is not clear in DFinder how to refine the abstraction automatically
+when the inferred invariant fails to justify the property.
+
+A compositional encoding of BIP into nuXmv
+ and an efficient instantiation of Explicit Scheduler Symbolic Thread (ESST) framework for BIP have been presented in~\cite{atva15}.
+ The encoding into nuXmv allows one to exploit the state-of-the-art verification techniques to verify BIP models.
+%
+The ESST based technique encodes the components as preemptive threads with predefined primitive functions and
+ utilizes a dedicated stateful BIP scheduler to orchestrate the abstract reachability analysis of the components.
+ The scheduler interacts with components via primitive functions, and also respects BIP operational semantics.
+ Moreover, partial order reduction techniques are applied in the scheduler to reduce the states of scheduler.
+
+In~\cite{tgc15}, we present a lazy predicate abstraction technique for BIP, and
+ we also propose a novel reduction technique called simultaneous set reduction,
+ which is further combined with lazy abstraction to reduce the search space of the abstract reachability analysis.

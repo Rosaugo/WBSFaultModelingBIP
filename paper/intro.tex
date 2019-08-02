@@ -1,0 +1,63 @@
+
+\section{Introduction}
+\label{introduction}
+
+
+Design, manufacture and verification of large scale reliable hardware/software
+    systems (e.g. cyber-physical systems) remains a grand challenge in system
+    design automation~\cite{sifakis2015}.
+To address this challenge, the rigorous system design
+    methodology~\cite{sifakis13} and the Behavior-Interaction-Priority (BIP)
+    framework~\cite{bip11} have been recently proposed.
+%
+Rigorous system design can be understood as a formal,
+ accountable and coherent process for
+ deriving correct and trustworthy system implementations
+ from high-level specifications.
+%
+The essential safety properties of the design are guaranteed
+ at the earliest possible design phase
+ by applying algorithmic verification to the system model,
+ and then the system implementation is automatically generated
+ by a sequence of property preserving model transformations,
+ progressively refining the model with details specific to the target platforms.
+
+
+BIP is a component-based system design framework,
+ coming with a formal language with well-defined semantics
+ and a tool chain supporting rigorous system design process.
+ The BIP language offers a three-layered modeling mechanism for
+  constructing complex system behavior and architectures~\cite{concur16},
+  i.e.,  Behavior, Interaction, and Priority.
+%
+Behavior is characterized by a set of components,
+ which are formally defined as automata extended with linear arithmetic.
+%
+Interaction specifies the multiparty synchronization of components,
+ among which data transfer may take place.
+%
+Priority can be used to schedule the interactions or resolve conflicts
+ when several interactions are enabled simultaneously.
+%
+The key insight underlying this three-layered modeling mechanism is
+ the principle of separation of concerns,
+ that is, system computation is captured by a set of components,
+ and system coordination is modeled by interaction and priority.
+%
+Moreover, this layered modeling mechanism also benefits
+ the formal verification from allowing us to handle the computation and coordination separately.
+%
+The BIP tool chain supports both algorithmic verification and testing of high-level system designs
+ ~\cite{dfinder10,atva15,tgc15}
+ and automatic system synthesis of low-level implementations from high-level system designs~\cite{bip-emsoft10}.
+ In practice, BIP has been actively used in several applications~\cite{bipapplication12a,bipapplication18}.
+
+
+The rest of the paper is structured as follows.
+%
+In Section~\ref{sec:preliminary} and Section~\ref{sec:bip},
+ we introduce the preliminaries and the BIP modeling language.
+%
+In Section~\ref{sec:relatework} and Section~\ref{sec:conclusions},
+ we review the most related works and draw some conclusions and outline directions for future work.
+
