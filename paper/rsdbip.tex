@@ -1,6 +1,17 @@
 
-\section{Architecture-based rigorous system design}
+\section{Architectures in BIP}
 \label{sec:rsd}
+
+
+We use architecture diagrams \cite{} to model the architecture styles in BIP.
+An architecture diagram consists of a set of component types, with associated cardinality constraints representing the
+expected number of instances of each component type and a set of connector motifs.
+Connector motifs, which define sets of BIP connectors, are non-empty sets of port types, each labelled as either a trigger or a synchron.
+Each port type has a cardinality constraint representing the expected number of port instances
+per component instance and two additional constraints: multiplicity and degree,
+represented as a pair m : d. Multiplicity constrains the number of instances of
+the port type that must participate in a connector defined by the motif; degree
+constrains the number of connectors attached to any instance of the port type.
 
 
 In this section, we present the BIP model with multiparty synchronization and data transfer.
