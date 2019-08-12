@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2018/W32TeX)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: splncs03.bst
+Database file #1: main.bib
+Warning--I didn't find a database entry for ""
+You've used 10 entries,
+            2785 wiz_defined-function locations,
+            645 strings with 6413 characters,
+and the built_in function-call counts, 6169 in all, are:
+= -- 502
+> -- 235
+< -- 9
++ -- 96
+- -- 86
+* -- 394
+:= -- 810
+add.period$ -- 15
+call.type$ -- 10
+change.case$ -- 81
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 528
+empty$ -- 513
+format.name$ -- 94
+if$ -- 1330
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 113
+newline$ -- 35
+num.names$ -- 20
+pop$ -- 211
+preamble$ -- 1
+purify$ -- 63
+quote$ -- 0
+skip$ -- 166
+stack$ -- 0
+substring$ -- 327
+swap$ -- 300
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 0
+while$ -- 46
+width$ -- 12
+write$ -- 103
+(There was 1 warning)

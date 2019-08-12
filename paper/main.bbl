@@ -1,0 +1,53 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{bipapplication12a}
+Abdellatif, T., Bensalem, S., Combaz, J., Silva, L.d., Ingrand, F.: Rigorous
+  design of robot software: A formal component-based approach. Robotics and
+  Autonomous Systems  60(12),  1563--1578 (2012)
+
+\bibitem{bip11}
+Basu, A., Bensalem, S., Bozga, M., Combaz, J., Jaber, M., Nguyen, T.H.,
+  Sifakis, J.: Rigorous component-based system design using the {BIP}
+  framework. Software, IEEE  (2011)
+
+\bibitem{dfinder10}
+Bensalem, S., Bozga, M., Nguyen, T., Sifakis, J.: Compositional verification
+  for component-based systems and application. {IET} Software  (2010)
+
+\bibitem{atva15}
+Bliudze, S., Cimatti, A., Jaber, M., Mover, S., Roveri, M., Saab, W., Wang, Q.:
+  Formal verification of infinite-state {BIP} models. In: ATVA (2015)
+
+\bibitem{bip-emsoft10}
+Bonakdarpour, B., Bozga, M., Jaber, M., Quilbeuf, J., Sifakis, J.: From
+  high-level component-based models to distributed implementations. In:
+  Proceedings of the 10th International conference on Embedded software, EMSOFT
+  2010, Scottsdale, Arizona, USA, October 24-29, 2010. pp. 209--218. ACM (2010)
+
+\bibitem{concur16}
+Konnov, I., Kotek, T., Wang, Q., Veith, H., Bliudze, S., Sifakis, J.:
+  Parameterized systems in bip: design and model checking. In: Proceedings of
+  the 27th International Conference on Concurrency Theory (CONCUR 2016). pp.
+  30--1. Schloss Dagstuhl--Leibniz-Zentrum fuer Informatik (2016)
+
+\bibitem{bipapplication18}
+Lekidis, A., Stachtiari, E., Katsaros, P., Bozga, M., Georgiadis, C.K.:
+  Model-based design of iot systems with the {BIP} component framework. Softw.,
+  Pract. Exper.  48(6),  1167--1194 (2018)
+
+\bibitem{tgc15}
+Qiang, W., Bliudze, S.: Verification of component-based systems via predicate
+  abstraction and simultaneous set reduction. In: Trustworthy Global Computing,
+  pp. 147--162. Springer (2015)
+
+\bibitem{sifakis13}
+Sifakis, J.: Rigorous system design. Foundations and Trends in Electronic
+  Design Automation  (2013)
+
+\bibitem{sifakis2015}
+Sifakis, J.: System design automation: Challenges and limitations. Proceedings
+  of the IEEE  103(11),  2093--2103 (2015)
+
+\end{thebibliography}
