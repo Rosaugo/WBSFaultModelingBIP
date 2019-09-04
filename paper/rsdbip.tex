@@ -1,18 +1,99 @@
 
-\section{Architectures in BIP}
+\section{BIP framework}
 \label{sec:rsd}
 
+In this section, we present the BIP framework.
+ In BIP framework, a model is constructed by composing three layers of modeling, that is behavior, interaction and priority.
+ More information about the underlying concepts and the operational semantics of BIP can be found in \cite{}.
+ In particular, BIP provides separation of concerns between behavioral and architectural aspects in modeling.
+% For BIP components, architecture is meaningfully defined as the combination of interactions and priorities.
+% Component architecture can therefore be easily decoupled, understood and analyzed independently of the associated behavior.
+
+
+The Behavior-Interaction-Priority (BIP) framework~\cite{bip11} is proposed as a component-based system design framework,
+which comes with a formal language with well-defined semantics and a tool chain supporting rigorous system design process.
+The BIP language offers a three-layered modeling mechanism for constructing complex system behavior and architectures~\cite{concur16}, i.e.,  Behavior, Interaction, and Priority.
+%
+Behavior is characterized by a set of components, which are formally defined as automata extended with linear arithmetic.
+Interaction specifies the multiparty synchronization of components, among which data transfer may take place.
+Priority can be used to schedule the interactions or resolve conflicts when several interactions are enabled simultaneously.
+The key insight underlying this three-layered modeling mechanism is the principle of separation of concerns,
+ that is, system computation is captured by a set of components, and system coordination is modeled by interaction and priority.
+
+ An atomic component is described by a finite-state automata extended with variables and ports, 
+ where variables are used to store local data, and ports form the interface of the component.
+ Ports are used to define the interaction and communication with other components, and may be associated with variables.
+ Moreover, ports also serve as the labels of the automata transitions.
+ States denote control locations at which the components await for interaction. 
+ A transition is a step, labeled by a port, from a control location to another. 
+ It may be associated a guard (i.e. a boolean expression) and an action (i.e., a function over variables). 
+ In BIP, actions are written in C/C++.
+ An example BIP component is shown in Fig.\ref{}.
+ 
+
+Composition of components is defined by interactions.
+ Essentially, interactions express synchronization constraints between transitions of the composed components.
+ Interactions are described in BIP as the combination of two types of elementary protocols: 
+ rendezvous to express strong symmetric synchronization and broadcast to express triggered asymmetric synchronization.
+ Interactions are structured in connectors, that is, sets of ports plus additional information. 
+ Within connectors, every port is typed either as synchron or as trigger. 
+ Trigger ports are used to initiate broadcast, that is, any subset of ports containing at least one trigger port denote a valid interaction of the connector. 
+ Rendezvous synchronizations are obtained on connectors where all the ports are synchrons. 
+ For such connectors, the only valid interaction is the maximal one, that is, the whole set of ports. 
+ Finally, connectors provide mechanisms for dealing with data associated to (ports of) interacting components. 
+ Every interaction has a guard, that is, an enabling condition and an action, that is, an update (data transfer) function, 
+ operating on data associated to ports participating in the interaction.
+ Circles (resp. triangles) denote synchron (resp. trigger) ports.
+
+
+Priorities are used to filter amongst possible interactions. 
+ They are expressed as conditional priority rules between two interactions.
+ Whenever the condition (on the state of the system) holds, and if the two interactions are enabled at the same time, 
+  then only the high priority interaction is allowed for execution.
+  In practice, priorities steer system evolution so as to meet performance requirements e.g. to express scheduling policies.
+ 
+
+The BIP toolbox includes a rich set of tools for modeling, transformation, analysis and code generation of models.
+ The toolbox provides a dedicated modeling language for describing BIP components.
+ It is a user-friendly textual language which provides syntactic constructs for describing components conforming to the formal framework. 
+ The BIP language leverages on C-style expression declarations, and provides additional syntactic constructs for defining component behavior, 
+ specifying the coordination through connectors, and describing the priorities.
+%
+ The toolbox also provides front-end tools for editing and parsing of BIP descriptions, as well as for generating intermediate models, followed by code generation (in C++). 
+ Intermediate models can be subject to various model transformations focusing on construction of optimized models for respectively sequential and distributed execution. 
+ Back-end tools include specific runtime for efficient execution on machines with different characteristics (e.g., real-time, mono/multi-thread, single/multi-core).
+%
+Besides, various analysis tools are provided to perform validation and verification of BIP models, 
+ such as deadlock analysis using the D-Finder tool \cite{dfinder10}, reachability analysis using the model checker  \cite{atva15}  and the runtime verification tool \cite{}. 
+% D-Finder implements state-of-the-art compositional methods [10] for computing invariants for systems consisting of interacting components. 
+% Invariants are safe (over) approximations of the set of reachable states of the system and can be used to prove safety requirements. 
+% In the case of BIP components, invariants computed are conjunctions of local invariants for atomic components and interaction invariants characterizing the interactions glue. 
+% Local component invariants are generated by static (and individual) analysis of atomic components.
+% Interaction invariants are generated from abstractions of the interacting components and the interactions glue.
+%
+% Runtime validation techniques available for BIP are based on construction and execution of monitored systems. 
+% Historically this validation approach is oriented towards finding errors rather than proving their absence from designs.
+% This approach has been adapted for BIP components as explained in [11]. 
+% It consists in constructing an executable model of the designed system together with monitors responsible for evaluation of safety requirements. 
+% Monitors are atomic components that sense the system state (through interaction with system¡¯s components) 
+% and react by moving to error states whenever the safety requirement is violated
+% i.e., if an inconsistent state is reached or an invalid sequence of interactions has been executed, etc. 
+% The BIP framework provides native support for building and running executable models for monitored systems.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\iffalse
 
 We use architecture diagrams \cite{} to model the architecture styles in BIP.
-An architecture diagram consists of a set of component types, with associated cardinality constraints representing the
-expected number of instances of each component type and a set of connector motifs.
-Connector motifs, which define sets of BIP connectors, are non-empty sets of port types, each labelled as either a trigger or a synchron.
-Each port type has a cardinality constraint representing the expected number of port instances
-per component instance and two additional constraints: multiplicity and degree,
-represented as a pair m : d. Multiplicity constrains the number of instances of
-the port type that must participate in a connector defined by the motif; degree
-constrains the number of connectors attached to any instance of the port type.
-
+An architecture diagram consists of a set of component types,
+ with associated cardinality constraints representing the expected number of instances of each component type and a set of connector motifs.
+ Connector motifs, which define sets of BIP connectors, are non-empty sets of port types, each labelled as either a trigger or a synchron.
+ Each port type has a cardinality constraint representing the expected number of port instances per component instance and two additional constraints: multiplicity and degree,
+ represented as a pair m : d. Multiplicity constrains the number of instances of the port type that must participate in a connector defined by the motif;
+ degree constrains the number of connectors attached to any instance of the port type.
 
 In this section, we present the BIP model with multiparty synchronization and data transfer.
 %
@@ -159,6 +240,8 @@ In this paper, we do not use temporal logics to specify safety properties,
  A \BIP model is safe if no error states are reachable.
  Notice that any safety property can be encoded as a reachability
  problem by necessarily creating additional components.
+
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,21 +1,19 @@
 
-\section{Case study}
-In this section, we introduce an airplane engine control software case study. For presentation simplicity, we choose one of its subsystems, the PLA signal processing system, as representative. We will give an informal description, focusing on its functional structure, properties and conditional constraints. Then we give the formal design model in BIP. Finally, we provide model verfication and validation.
+\section{Formal system model in BIP}
 
-\subsection{Informal description}
-The Power Level Angle (PLA) signal processing system is part of the Full Authority Digital Engine Control System (FADEC), which provides engine control during flight to achieve stable and transient engine characteristics. The purpose of PLA signal processing system is to convert the obtained throttle stick signal value into the original throttle stick angle value and judge it. If it is judged that there is no fault, then it will return the corresponding value of the PLA signal after processing and set a fault signal to invalid, representing that the system has no PLA signal fault in current period. Otherwise it will return the fault information and set the fault signal to valid.
+In this section, we introduce an airplane engine control software case study. 
+ For presentation simplicity, we choose one of its subsystems, the PLA signal processing system, as representative. 
+ We will give an informal description, focusing on its functional structure, properties and conditional constraints. 
+ Then we give the formal design model in BIP. 
+ Finally, we provide model verfication and validation.
 
-There are three modules in the system. PLA signals will first undergo a BIT Diagnosis module, then be calibrated and converted into physical quantities. After the Extremum and Slope Diagnosis module, it will finally generate the PLA fault signal for output.
 
-The Built-int Test(BIT) refers to the detection and monitoring of the system and its own equipment. In the PLA signal processing system model, the BIT Diagnosis realizes the analog quantity, or periodic fault detection of circuits such as fault location and processing based on the diagnosis results.
+\subsection{Overview of the system model}
 
-The calibration conversion module's function is to collect the signal from signal collector. The arriving signal will be converted to the corresponding engineering value by means of a calibration curve or an index table.
-
-An Extremum/Slope Diagnosis module contains extremum diagnosis and slope diagnosis.The function of extremum diagnosis is to judge whether the current signal is in valid range since the PLA signal processing system cannot handle illegal data. The function of slope diagnosis is to give the constraint of the magnitude of the change between the two adjacent signals.
-
-The three modules introduced above work together for giving a credible output signal. In the next chapter, we will translate this informal model to formal BIP model for further verification and validation. 
-\subsection{Formal system model in BIP}
-We construct the BIP model of the PLA signal processing system through the composition of atomic and composite components with BIP connectors. The block diagram for our system is shown in Fig.1, it consists of a Task Unit and a Signal Processing Unit. The Signal Processing Unit consists of atomic component c1, composite components p1 and c2. In the Task Unit, there is an atomic component t1, which produce signal value for Signal Processing Unit.
+We construct the BIP model of the PLA signal processing system through the composition of atomic and composite components with BIP connectors. 
+ The block diagram for our system is shown in Fig.1, it consists of a Task Unit and a Signal Processing Unit. 
+ The Signal Processing Unit consists of atomic component c1, composite components p1 and c2. 
+ In the Task Unit, there is an atomic component t1, which produce signal value for Signal Processing Unit.
 
 \begin{figure}[ht!]
 	\centering
@@ -46,9 +44,6 @@ The behavior of atomic component t1 is shown in Fig.2. It is used as simulator o
 
 \subsubsection{BIT Diagnosis module}
 
-\ 
-
-\ 
 
 \noindent In our design, the BIT Diagnosis module, Calibration Conversion module and Extremum/Slope Diagnosis module are three subsystems of PLA signal processing system. The BIT Diagnosis module is shown in figure 3. In the graphical notation, the three atomic component instances \emph{p1}, \emph{p2} and \emph{p3} receive BIT signal through port \emph{receiveBIT}, a connector distributes the signal to these components and another connector merges their output and sends it to the an instance of \emph{Decider} component. The BIP description of the definition and instantiation of \emph{BIT Diagnosis} is shown below:
 
@@ -58,10 +53,10 @@ The behavior of atomic component t1 is shown in Fig.2. It is used as simulator o
   `\textbf{component} \emph{BITAtom\_sin sin}`
   `\textbf{component} \emph{BITAtom\_cos cos}`
   `\textbf{component} \emph{BITAtom\_Decider d}`
-  
+
   `\textbf{connector} \emph{ThreeToOne o(enc.sendBIT,sin.sendBIT,cos.sendBIT,d.receiveSignal)}`
   `\textbf{connector} \emph{Merge m(enc.receiveBIT,sin.receiveBIT,cos.receiveBIT)}`
-  
+
   `\textbf{export port} \emph{m.Merged\_Signal} \textbf{as} \emph{receiveBIT}`
   `\textbf{export port} \emph{d.output} \textbf{as} \emph{sendBIT}`
 `\textbf{end}`
@@ -109,7 +104,7 @@ In our system, atomic component is considered as the smallest unit of the archit
 		5  & $q>=5$   & PLA.Signal\_enc: $=0$ \\
 		6  & $p<5$   & null \\
 		7  & $q<5$   & null \\
-		\hline       
+		\hline
 	\end{tabular}
 	\label{bs}
 \end{table}
@@ -134,18 +129,18 @@ During execution, we consider a WAIT to WAIT transition set as a cycle. In each 
 		\hline
 		1  & PLA.Signal\_enc $=0 \wedge$ PLA.Signal\_sin $=0 \wedge$ PLA.Signal\_cos $=0$  & $PLA.Signal :=0$ \\
 		2  & PLA.Signal\_enc $=1 \vee$ PLA.Signal\_sin $=1 \vee$ PLA.Signal\_cos $=1$   & $PLA.Signal :=1$ \\
-		\hline       
+		\hline
 	\end{tabular}
 	\label{bs}
 \end{table}
 
-As shown in Fig.5, the BIT Diagnosis Decider is responsible for integrating the signals output by three BIT Diagnosis. We also produce a WAIT to WAIT transition set, \emph{receiveSignal} as input event and \emph{output} as output event. We define a bool type variable \emph{PLA.Signal} as the BIT fault signal for output. 
+As shown in Fig.5, the BIT Diagnosis Decider is responsible for integrating the signals output by three BIT Diagnosis. We also produce a WAIT to WAIT transition set, \emph{receiveSignal} as input event and \emph{output} as output event. We define a bool type variable \emph{PLA.Signal} as the BIT fault signal for output.
 
 \subsubsection{Calibration Conversion module}
 
-\ 
+\
 
-\ 
+\
 
 \noindent The Calibration Conversion module collects the signal from signal collector and converts it to the corresponding engineering value by means of a calibration curve and an index table. This module is designed as an atomic component c1 in the BIP model, its ports and behavior is shown below:
 
@@ -167,7 +162,7 @@ It has been introduced that every atomic component can be converted to its corre
   `\textbf{export port} \emph{PLAPort\_t4 sendMean(myangle)}`
 
   `\textbf{place} \emph{START, EXEC, END}`
-  
+
   `\textbf{initial to} \emph{START}`
     `\textbf{do} \emph{\{myangle = 0;\}}`
 
@@ -180,13 +175,13 @@ It has been introduced that every atomic component can be converted to its corre
 `\textbf{end}`
 \end{lstlisting}
 
-In the BIP description, we define internal data, external ports, serveral states and transitions. Transitions begin with field \emph{on} are external transitions which are driven by external events. Relatively, transitions begin with field \emph{internal} literally internal transitions which are executed as soon as the atomic component reach the state. We define an internal variable \emph{myangle} for output. System calculate its value through calibration curve and index table from two variables \emph{mysin} and \emph{mycos}.  
+In the BIP description, we define internal data, external ports, serveral states and transitions. Transitions begin with field \emph{on} are external transitions which are driven by external events. Relatively, transitions begin with field \emph{internal} literally internal transitions which are executed as soon as the atomic component reach the state. We define an internal variable \emph{myangle} for output. System calculate its value through calibration curve and index table from two variables \emph{mysin} and \emph{mycos}.
 
 \subsubsection{Extremum/Slope Diagnosis module}
 
-\ 
+\
 
-\ 
+\
 
 \noindent The Extremum/Slope Diagnosis module is almost the same as BIT Diagnosis module. It picks up signal value, diagnoses them and integrates the results into one variable for output. We also provide the architecture of Extremum/Slope Diagnosis:
 
@@ -215,10 +210,10 @@ It should be noticed that in Extremum/Slope Diagnosis module, besides signals se
 
 The connector types \emph{TwoToOne} and \emph{Merge\_two} do almost the same work as the two connector types used in BIT Diagnosis module except that the connector types used here have only two parameters, not three.
 
-\ 
+\
 In the entire system, the compound type \emph{ESCompound} will be instantiated as c2, which is introduced in Fig.1.
 
-\ 
+\
 Till now, we have introduced our system informally and in formal BIP description. To give a formal proof whether our system and BIP model is safety and effectiveness or not, the verification and validation of the system above will produced in the next chapter.
 \subsection{Model verification and validation}
 
