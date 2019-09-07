@@ -374,28 +374,28 @@ package PLAPackage
             do {printf("ES_Decider: system output validflag = %d\n", ValidFlag);}
     end
 
+    connector type OneToThree(PLAPort_t2 r1, PLAPort_t2 r2, PLAPort_t2 r3, PLAPort_t2 r4)
+        define r1 r2 r3 r4
+
+        on r1 r2 r3 r4 down {r2.a = r1.a; r3.a = r1.a; r4.a = r1.a; r2.b = r1.b; r3.b = r1.b; r4.b = r1.b;}
+    end
+
+    connector type OneToTwo(PLAPort_t4 r1, PLAPort_t4 r2, PLAPort_t4 r3)
+        define r1 r2 r3 r4
+
+        on r1 r2 r3 r4 down {r2.a = r1.a; r3.a = r1.a;}
+    end
+
     connector type ThreeToOne(PLAPort_t1 r1, PLAPort_t1 r2, PLAPort_t1 r3, PLAPort_t3 r4)
         define r1 r2 r3 r4
 
         on r1 r2 r3 r4 down {r4.a = r1.a; r4.b = r2.a; r4.c = r3.a;}
     end
 
-    connector type Merge(PLAPort_t2 r1, PLAPort_t2 r2, PLAPort_t2 r3)
-        data int mysin,mycos
-        export port PLAPort_t2 Merged_Signal(mysin,mycos)
-
-        define r1 r2 r3
-
-        on r1 r2 r3 down {r1.a = mysin; r2.a = mysin; r3.a = mysin; r1.b = mycos; r2.b = mycos; r3.b = mycos;}
-    end
-
-    connector type Merge_two(PLAPort_t4 r1, PLAPort_t4 r2)
-        data int mymean
-        export port PLAPort_t4 Merged_Signal_two(mymean)
-
+    connector type OneToOne_t1(PLAPort_t2 r1, PLAPort_t2 r2)
         define r1 r2
 
-        on r1 r2 down {r1.a = mymean; r2.a = mymean;}
+        on r1 r2 down {r2.a = r1.a; r2.b = r1.b;}
     end
 
     connector type TwoToOne(PLAPort_t1 r1, PLAPort_t1 r2,PLAPort_t5 r3)
@@ -404,62 +404,30 @@ package PLAPackage
 	    on r1 r2 r3 down {r3.a = r1.a; r3.b = r2.a;}
     end
 
-    connector type OneToOne_t1(PLAPort_t1 r1, PLAPort_t1 r2)
+    connector type OneToOne_t2(PLAPort_t1 r1, PLAPort_t1 r2)
         define r1 r2
 
-        on r1 r2 down {r2.a = r1.a;}
-    end
-
-    connector type OneToOne_t2(PLAPort_t4 r1, PLAPort_t4 r2)
-        define r1 r2
-
-        on r1 r2 down {r2.a = r1.a;}
-    end
-
-    connector type OneToOne_t3(PLAPort_t2 r1, PLAPort_t2 r2)
-        define r1 r2
-
-        on r1 r2 down {r2.a = r1.a; r2.b = r1.b;}
-    end
-
-    compound type BITCompound_P1()
-        component BITAtom_enc enc()
-        component BITAtom_sin sin()
-        component BITAtom_cos cos()
-        component BITAtom_Decider d()
-
-        connector ThreeToOne o(enc.sendBIT,sin.sendBIT,cos.sendBIT,d.receiveSignal)
-        connector Merge m(enc.receiveBIT,sin.receiveBIT,cos.receiveBIT)
-
-        export port m.Merged_Signal as receiveBIT
-        export port d.output as sendBIT
-    end
-
-    compound type ESCompound_C1()
-        component ExtAtom ext()
-        component SloAtom slo()
-        component ESAtom_Decider d()
-
-        connector TwoToOne o(ext.sendRes,slo.sendRes,d.receiveSignal1)
-        connector Merge_two m(ext.receiveMean,slo.receiveMean)
-
-        export port d.receiveSignal2 as receiveBIT
-	    export port m.Merged_Signal_two as receiveMean
-
-        //export port d.output as output
+        on r1 r2 down {r2.a = r1.a}
     end
 
     compound type PLACompound()
         component TaskAtom t1()
-        component BITCompound_P1 p1()
+        component BITAtom_enc p1()
+        component BITAtom_sin p2()
+        component BITAtom_cos p3()
+        component BITAtom_Decider d1()
         component CalAtom c1()
-        component ESCompound_C1  c2()
+        component ExtAtom e1()
+        component SloAtom s1()
+        component ESAtom_Decider d2()
 
-        connector OneToOne_t1 ct1(p1.sendBIT,c2.receiveBIT)
-        connector OneToOne_t2 ct2(c1.sendMean,c2.receiveMean)
-        connector OneToOne_t3 ct3(t1.sendBIT,p1.receiveBIT)
-        connector OneToOne_t3 ct4(t1.sendMean,c1.receiveMean)
+        connector OneToOne_t1 ct1(t1.sendMean,c1.receiveMean)
+        connector OneToThree ct2(t1.sendBIT,p1.receiveBIT,p2.receiveBIT,r3.receiveBIT)
+        connector ThreeToOne ct3(p1.sendBIT,p2.sendBIT,p3.sendBIT,d1.receiveSignal)
+        connector OneToOne ct4(d1.output,d2.receiveSignal2)
+        connector OneToTwo ct5(c1.sendMean,e1.receiveMean,s1.receiveMean)
+        connector TwoToOne ct6(e1.sendRes,s1.sendRes,d2.receiveSignal1)
 
-        //export port c2.output as output
+        //export port d2.output as output
     end
 end
