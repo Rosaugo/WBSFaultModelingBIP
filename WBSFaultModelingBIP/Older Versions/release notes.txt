@@ -1,0 +1,9 @@
+WBS_BIP_Norminal
+单轮正常工作模式（绿色液压管路供压）下的无故障模型
+
+WBS_BIPv0.0.2
+在原有的模型基础上包含了HydraulicPump，Shutoff Valve和 Meter Valve三个模块的故障模型
+
+WBS_BIPv0.1.0
+在原有的模型基础上包含了Power Supply, BSCU, HydraulicPump，Shutoff Valve和 Meter Valve五个模块的故障模型
+完成对单轮正常工作模式（绿色液压管路供压）下的故障模型建模

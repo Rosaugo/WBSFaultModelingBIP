@@ -1,0 +1,307 @@
+@cpp(include="stdio.h")
+package WBS_1
+
+	// Constant data definitions 
+
+	// Port types definitions
+	port type WBSPort_t1 ( int var )
+	port type WBSPort_t2 ( bool var )
+
+	// Connector types definitions
+	connector type transHyd( WBSPort_t1 p1, WBSPort_t1 p2 )
+		define p1 p2
+		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	connector type transCmd( WBSPort_t2 p1, WBSPort_t2 p2 )
+		define p1 p2
+		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	// Atom types definitions
+	atom type HydraulicPump()
+		// Variable declarations
+		data int Hydraulic
+
+		// Port declarations
+		export port WBSPort_t1 sendHydraulic ( Hydraulic )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec
+
+		// Initial location declarations
+		initial to Exec do { Hydraulic = 10; }
+
+		// transitions
+		on sendHydraulic from Exec to Exec
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type ShutoffValve()
+		// Variable declarations
+		data int ShutOffHyd
+		data int Hydraulic
+		data bool SystemValidity
+
+		// Port declarations
+		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
+		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
+		export port WBSPort_t1 sendSOHyd ( ShutOffHyd )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R1,Exec, S1, S2
+
+		// Initial location declarations
+		initial to Init do { ShutOffHyd = 0; }
+
+		// transitions
+		on receiveSYSVal from Init to R1
+
+		on receiveHydraulic from R1 to Exec
+
+		internal from Exec to S1
+			provided(SystemValidity == true)
+			do{ShutOffHyd = Hydraulic;}
+
+		internal from Exec to S2
+			provided(SystemValidity == false)
+			do{ShutOffHyd = 0;}
+
+		on sendSOHyd from S1 to Init
+
+		on sendSOHyd from S2 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type MeterValve()
+		// Variable declarations
+		data int ShutOffHyd
+		data int MeterHyd
+		data bool BrakeAntiSkidCMD
+		data bool MechanicalCMD
+
+		// Port declarations
+		export port WBSPort_t2 receiveBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_t1 receiveSOHyd ( ShutOffHyd )
+		export port WBSPort_t1 sendMeterHyd ( MeterHyd )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R2, Exec, S1, S2
+
+		// Initial location declarations
+		initial to Init do { MeterHyd = 0; MechanicalCMD = false; }
+
+		// transitions
+		on receiveBRKASCMD from Init to R2
+
+		on receiveSOHyd from R2 to Exec
+
+		internal from Exec to S1
+			provided(BrakeAntiSkidCMD == true || MechanicalCMD == true )
+			do{MeterHyd = ShutOffHyd;}	
+
+		internal from Exec to S2
+			provided(BrakeAntiSkidCMD == false && MechanicalCMD == false)
+			do{MeterHyd = 0;}
+
+		on sendMeterHyd from S1 to Init
+
+		on sendMeterHyd from S2 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type BSCU()
+		// Variable declarations
+		data int WheelSpeed
+		data int PedalPosition
+		data int GroundSpeed
+		data bool SystemValidity
+		data bool BrakeAntiSkidCMD
+		data bool Power
+
+		// Port declarations
+		export port WBSPort_t1 receiveGSpeed ( GroundSpeed )
+		export port WBSPort_t1 receiveWSpeed ( WheelSpeed )
+		export port WBSPort_t1 receivePP ( PedalPosition )
+		export port WBSPort_t2 sendSYSVal ( SystemValidity )
+		export port WBSPort_t2 sendBRKASCMD ( BrakeAntiSkidCMD )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec1, R1, R2, R3, P1, P2, Exec2, AS1, AS2
+
+		// Initial location declarations
+		initial to Exec1 do { BrakeAntiSkidCMD = false; SystemValidity = false; Power = true;}
+
+		// transitions
+		on receiveGSpeed from Exec1 to R1
+
+		on receiveWSpeed from R1 to R2
+
+		on receivePP from R2 to R3
+
+		internal from R3 to P1
+			provided(Power == true)
+			do{SystemValidity = true;}
+
+		internal from R3 to P2
+			provided(Power == false)
+			do{SystemValidity = false;}
+
+		on sendSYSVal from P1 to Exec2
+
+		on sendSYSVal from P2 to Exec2
+
+		internal from Exec2 to AS1
+			provided(PedalPosition == 0 || WheelSpeed != GroundSpeed)
+			do{BrakeAntiSkidCMD = false;}
+
+		internal from Exec2 to AS2
+			provided(PedalPosition != 0 && WheelSpeed == GroundSpeed)
+			do{BrakeAntiSkidCMD = true;}
+
+		on sendBRKASCMD from AS1 to Exec1
+
+		on sendBRKASCMD from AS2 to Exec1
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type WheelSpeedProvider()
+		// Variable declarations
+		data int WheelSpeed
+
+		// Port declarations
+		export port WBSPort_t1 sendWSpeed ( WheelSpeed )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {WheelSpeed = 8;}
+
+		// transitions
+		on sendWSpeed from s0 to s0
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type PedalPositionProvider()
+		// Variable declarations
+		data int PedalPosition
+
+		// Port declarations
+		export port WBSPort_t1 sendPP ( PedalPosition )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {PedalPosition = 5;}
+
+		// transitions
+		on sendPP from s0 to s0
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type GroundSpeedProvider()
+		// Variable declarations
+		data int GroundSpeed
+
+		// Port declarations
+		export port WBSPort_t1 sendGSpeed ( GroundSpeed )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {GroundSpeed = 8;}
+
+		// transitions
+		on sendGSpeed from s0 to s0 
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type MeterHydMonitor()
+		// Variable declarations
+		data int MeterHyd
+
+		// Port declarations
+		export port WBSPort_t1 receiveMeterHyd ( MeterHyd )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0
+
+		// transitions
+		on receiveMeterHyd from s0 to s0
+
+		// invariants
+
+		// Priorities
+	end
+
+	// Compound types definitions
+	compound type Compound()
+
+		// Variable declarations
+
+		// Component instantiations
+		component WheelSpeedProvider Component1()
+		component PedalPositionProvider Component2()
+		component GroundSpeedProvider Component3()
+		component HydraulicPump Component4()
+		component ShutoffValve Component5()
+		component MeterValve Component6()
+		component BSCU Component7()
+		component MeterHydMonitor Component8()
+
+		// Connector instantiations
+		connector transHyd connect1( Component1.sendWSpeed, Component7.receiveWSpeed)
+		connector transHyd connect2( Component2.sendPP, Component7.receivePP)
+		connector transHyd connect3( Component3.sendGSpeed, Component7.receiveGSpeed)
+		connector transCmd connect4( Component7.sendSYSVal, Component5.receiveSYSVal)
+		connector transCmd connect5( Component7.sendBRKASCMD, Component6.receiveBRKASCMD)
+		connector transHyd connect6( Component4.sendHydraulic, Component5.receiveHydraulic)
+		connector transHyd connect7( Component5.sendSOHyd, Component6.receiveSOHyd)
+		connector transHyd connect8( Component6.sendMeterHyd, Component8.receiveMeterHyd)
+
+		// Priority instantiations
+	end
+end
