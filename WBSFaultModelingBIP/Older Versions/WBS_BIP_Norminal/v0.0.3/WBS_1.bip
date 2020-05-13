@@ -1,0 +1,515 @@
+@cpp(include="stdio.h")
+package WBS_2
+
+	extern function int min(int, int)
+	extern function int max(int, int)
+	extern function printf(string, int)
+
+	// Constant data definitions 
+
+	// Port types definitions
+	port type WBSPort_t1 ( int var )
+	port type WBSPort_t2 ( bool var )
+	port type WBSPort_t3 ( int var1, int var2 )
+
+	// Connector types definitions
+	connector type transHyd( WBSPort_t1 p1, WBSPort_t1 p2 )
+		define p1 p2
+		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	connector type transHyd_v1( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+		define p1 p2 p3
+		on p1 p2 p3 down { p2.var = p1.var; p3.var = p1.var; }
+	end
+
+	connector type transHyd_v2( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+		define p1 p2 p3
+		on p1 p2 p3 down { p3.var = max(p1.var, p2.var); }
+	end
+
+	connector type transHyd_v3( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+		define p1 p2 p3
+		on p1 p2 p3 down 
+			                  {
+				        if(p1.var == p2.var) then
+					p3.var = p1.var;
+				        else
+					p3.var = 0;
+				        fi
+				}
+	end
+
+	connector type transCmd( WBSPort_t2 p1, WBSPort_t2 p2 )
+		define p1 p2
+		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	connector type transCmd_TwoToTwo( WBSPort_t2 p1, WBSPort_t2 p2, WBSPort_t2 p3, WBSPort_t2 p4)
+		define p1 p2 p3 p4
+		on p1 p2 p3 p4 down 
+				{
+				        if(p1.var == p2.var) then
+				        	p3.var = p1.var;
+					p4.var = p2.var;
+				        else
+					p3.var = false;
+					p4.var = false;
+				        fi
+				 }
+	end
+
+	connector type transHyd_TwoToOne ( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t3 p3 )
+		define p1 p2 p3
+		on p1 p2 p3 down { p3.var1 = p1.var; p3.var2 = p2.var; } 
+	end
+
+	// Atom types definitions
+	atom type HydraulicPump()
+		// Variable declarations
+		data int Hydraulic
+
+		// Port declarations
+		export port WBSPort_t1 sendHydraulic ( Hydraulic )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec
+
+		// Initial location declarations
+		initial to Exec do { Hydraulic = 10; }
+
+		// transitions
+		on sendHydraulic from Exec to Exec
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type ShutoffValve()
+		// Variable declarations
+		data int ShutOffHyd
+		data int Hydraulic
+		data bool SystemValidity
+
+		// Port declarations
+		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
+		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
+		export port WBSPort_t1 sendSOHyd ( ShutOffHyd )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R1,Exec, S1, S2
+
+		// Initial location declarations
+		initial to Init do { ShutOffHyd = 0; }
+
+		// transitions
+		on receiveSYSVal from Init to R1
+
+		on receiveHydraulic from R1 to Exec
+
+		internal from Exec to S1
+			provided(SystemValidity == true)
+			do{ShutOffHyd = Hydraulic;}
+
+		internal from Exec to S2
+			provided(SystemValidity == false)
+			do{ShutOffHyd = 0;}
+
+		on sendSOHyd from S1 to Init
+
+		on sendSOHyd from S2 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	// TBD
+	atom type SelectorValve()
+		// Variable declarations
+		data int GreenHydraulicOut
+		data int BlueHydraulicOut
+		data bool SystemValidity
+		data int GreenHydraulicIn
+		data int BlueHydraulicIn
+
+		// Port declarations
+		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
+		export port WBSPort_t1 receiveGreenHyd ( GreenHydraulicIn )
+		export port WBSPort_t1 receiveBlueHyd ( BlueHydraulicIn )
+		export port WBSPort_t1 sendGreenHyd ( GreenHydraulicOut )
+		export port WBSPort_t1 sendBlueHyd ( BlueHydraulicOut )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R1, R2, Exec, S1, S2, S3
+
+		// Initial location declarations
+		initial to Init do { GreenHydraulicOut = 0; BlueHydraulicOut = 0; }
+
+		// transitions
+		on receiveSYSVal from Init to R1
+
+		on receiveGreenHyd from R1 to R2
+
+		on receiveBlueHyd from R2 to Exec
+
+		internal from Exec to S1 
+			provided( SystemValidity && GreenHydraulicIn > 0)
+			do{ GreenHydraulicOut = GreenHydraulicIn; BlueHydraulicOut = 0; }
+
+		internal from Exec to S2 
+			provided( (!SystemValidity || GreenHydraulicIn == 0) && BlueHydraulicIn > 0 )
+			do{ BlueHydraulicOut = BlueHydraulicIn; GreenHydraulicOut = 0; }
+
+		on sendBlueHyd from S1 to S3
+
+		on sendBlueHyd from S2 to S3
+
+		on sendGreenHyd from S3 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	// TBD
+	atom type AntiSkidValve()
+		// Variable declarations
+		data int AntiSkidHydraulic
+		data int Hydraulic
+		data int AntiSkidCmd
+
+		// Port declarations
+		export port WBSPort_t1 receiveASCmd ( AntiSkidCmd )
+		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
+		export port WBSPort_t1 sendASHyd ( AntiSkidHydraulic )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R1, Exec, S1
+
+		// Initial location declarations
+		initial to Init do { AntiSkidHydraulic = 0; }
+
+		// transitions
+		on receiveASCmd from Init to R1
+
+		on receiveHydraulic from R1 to Exec
+
+		internal from Exec to S1
+			do { AntiSkidHydraulic = min(AntiSkidCmd, Hydraulic); }
+
+		on sendASHyd from S1 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	// TBD
+	atom type BrakePedal()
+		// Variable declarations
+		data int PedalPosition
+
+		// Port declarations
+		export port WBSPort_t1 sendPP ( PedalPosition )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec
+
+		// Initial location declarations
+		initial to Exec do { PedalPosition = 8; }
+
+		on sendPP from Exec to Exec
+
+		// transitions
+
+		// invariants
+
+		// Priorities
+	end
+
+	// TBD
+	atom type Wheel()
+		// Variable declarations
+		data int WheelPressure
+		data int GreenMeterHydraulic
+		data int BlueMeterHydraulic
+
+		// Port declarations
+		export port WBSPort_t3 receiveMeterHyd ( GreenMeterHydraulic, BlueMeterHydraulic )
+		export port WBSPort_t1 sendWheelPressure ( WheelPressure )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, Exec, S1
+
+		// Initial location declarations
+		initial to Init do { WheelPressure = 0; }
+
+		// transitions
+		on receiveMeterHyd from Init to Exec
+
+		internal from Exec to S1
+			do { WheelPressure = GreenMeterHydraulic + BlueMeterHydraulic; }
+
+		on sendWheelPressure from S1 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type MeterValve()
+		// Variable declarations
+		data int Hydraulic
+		data int MeterHyd
+		data bool BrakeAntiSkidCMD
+		data bool MechanicalCMD
+
+		// Port declarations
+		export port WBSPort_t2 receiveBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_t1 receiveHyd ( Hydraulic )
+		export port WBSPort_t1 sendMeterHyd ( MeterHyd )
+
+		// Clock declarations
+
+		// Locations declaration
+		place Init, R2, Exec, S1, S2
+
+		// Initial location declarations
+		initial to Init do { MeterHyd = 0; MechanicalCMD = false; }
+
+		// transitions
+		on receiveBRKASCMD from Init to R2
+
+		on receiveHyd from R2 to Exec
+
+		internal from Exec to S1
+			provided(BrakeAntiSkidCMD == true || MechanicalCMD == true )
+			do{MeterHyd = Hydraulic;}	
+
+		internal from Exec to S2
+			provided(BrakeAntiSkidCMD == false && MechanicalCMD == false)
+			do{MeterHyd = 0;}
+
+		on sendMeterHyd from S1 to Init
+
+		on sendMeterHyd from S2 to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type BSCU()
+		// Variable declarations
+		data int WheelSpeed
+		data int PedalPosition
+		data int GroundSpeed
+		data bool SystemValidity
+		data bool BrakeAntiSkidCMD
+		data bool Power
+		data int AntiSkidCmd
+
+		// Port declarations
+		export port WBSPort_t1 receiveGSpeed ( GroundSpeed )
+		export port WBSPort_t1 receiveWSpeed ( WheelSpeed )
+		export port WBSPort_t1 receivePP ( PedalPosition )
+		export port WBSPort_t2 sendSYSVal ( SystemValidity )
+		export port WBSPort_t2 sendBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_t1 sendAntiSkidCmd ( AntiSkidCmd )
+ 
+		// Clock declarations
+
+		// Locations declaration
+		place Exec1, R1, R2, R3, P1, P2, Exec2, AS1, AS2, AS3
+
+		// Initial location declarations
+		initial to Exec1 do { BrakeAntiSkidCMD = false; SystemValidity = false; Power = true;}
+
+		// transitions
+		on receiveGSpeed from Exec1 to R1
+
+		on receiveWSpeed from R1 to R2
+
+		on receivePP from R2 to R3
+
+		internal from R3 to P1
+			provided(Power == true)
+			do{SystemValidity = true;}
+
+		internal from R3 to P2
+			provided(Power == false)
+			do{SystemValidity = false;}
+
+		on sendSYSVal from P1 to Exec2
+
+		on sendSYSVal from P2 to Exec2
+
+		internal from Exec2 to AS1
+			provided(PedalPosition == 0 || WheelSpeed != GroundSpeed)
+			do{BrakeAntiSkidCMD = false;}
+
+		internal from Exec2 to AS2
+			provided(PedalPosition != 0 && WheelSpeed == GroundSpeed)
+			do{BrakeAntiSkidCMD = true;}
+
+		on sendBRKASCMD from AS1 to AS3
+
+		on sendBRKASCMD from AS2 to AS3
+
+		on sendAntiSkidCmd from AS3 to Exec1
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type WheelSpeedProvider()
+		// Variable declarations
+		data int WheelSpeed
+
+		// Port declarations
+		export port WBSPort_t1 sendWSpeed ( WheelSpeed )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {WheelSpeed = 8;}
+
+		// transitions
+		on sendWSpeed from s0 to s0
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type PedalPositionProvider()
+		// Variable declarations
+		data int PedalPosition
+		data bool Mechanical
+
+		// Port declarations
+		export port WBSPort_t1 sendPP ( PedalPosition )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {PedalPosition = 5;}
+
+		// transitions
+		on sendPP from s0 to s0
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type GroundSpeedProvider()
+		// Variable declarations
+		data int GroundSpeed
+
+		// Port declarations
+		export port WBSPort_t1 sendGSpeed ( GroundSpeed )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0 do {GroundSpeed = 8;}
+
+		// transitions
+		on sendGSpeed from s0 to s0 
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type WheelPressureMonitor()
+		// Variable declarations
+		data int WheelPressure
+
+		// Port declarations
+		export port WBSPort_t1 receiveWheelPressure ( WheelPressure )
+
+		// Clock declarations
+
+		// Locations declaration
+		place s0
+
+		// Initial location declarations
+		initial to s0
+
+		// transitions
+		on receiveWheelPressure from s0 to s0
+				do { printf("The output wheel pressure is %d\n", WheelPressure); }
+
+		// invariants
+
+		// Priorities
+	end
+
+	// Compound types definitions
+	compound type Compound()
+
+		// Variable declarations
+
+		// Component instantiations
+		component WheelSpeedProvider Component1()
+		component PedalPositionProvider Component2()
+		component GroundSpeedProvider Component3()
+		component ShutoffValve ShutoffValve()
+		component BSCU BSCU1()
+		component WheelPressureMonitor Component8()
+		component HydraulicPump BlueHydraulicPump()
+		component HydraulicPump Accumulator()
+		component HydraulicPump GreenHydraulicPump()
+		component MeterValve GreenMeterValve()
+		component MeterValve BlueMeterValve()
+		component SelectorValve SelectorValve()
+		component AntiSkidValve AntiSkidValve()
+		component Wheel Wheel()
+		// new feature of two BSCU
+		component BSCU BSCU2()
+
+		// Connector instantiations
+		connector transHyd_v1 connect1( Component1.sendWSpeed, BSCU1.receiveWSpeed, BSCU2.receiveWSpeed)
+		connector transHyd_v1 connect2( Component2.sendPP, BSCU1.receivePP, BSCU2.receivePP)
+		connector transHyd_v1 connect3( Component3.sendGSpeed, BSCU1.receiveGSpeed, BSCU2.receiveGSpeed)
+		connector transCmd_TwoToTwo connect4( BSCU1.sendSYSVal, BSCU2.sendSYSVal, ShutoffValve.receiveSYSVal, SelectorValve.receiveSYSVal)
+		connector transCmd_TwoToTwo connect5( BSCU1.sendBRKASCMD, BSCU2.sendBRKASCMD, GreenMeterValve.receiveBRKASCMD, BlueMeterValve.receiveBRKASCMD)
+		connector transHyd connect6( GreenHydraulicPump.sendHydraulic, ShutoffValve.receiveHydraulic)
+		connector transHyd connect7( ShutoffValve.sendSOHyd, SelectorValve.receiveGreenHyd)
+		connector transHyd connect8( Wheel.sendWheelPressure, Component8.receiveWheelPressure)
+		connector transHyd_v3 connect9( BSCU1.sendAntiSkidCmd, BSCU2.sendAntiSkidCmd, AntiSkidValve.receiveASCmd)
+		connector transHyd_v2 connect10( BlueHydraulicPump.sendHydraulic, Accumulator.sendHydraulic, SelectorValve.receiveBlueHyd)
+		connector transHyd connect11( SelectorValve.sendGreenHyd, GreenMeterValve.receiveHyd)
+		connector transHyd connect12( SelectorValve.sendBlueHyd, AntiSkidValve.receiveHydraulic)
+		connector transHyd connect13( AntiSkidValve.sendASHyd, BlueMeterValve.receiveHyd)
+		connector transHyd_TwoToOne connect14( GreenMeterValve.sendMeterHyd, BlueMeterValve.sendMeterHyd, Wheel.receiveMeterHyd)
+
+		// Priority instantiations
+	end
+end
