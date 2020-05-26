@@ -1,4 +1,4 @@
-WBS_BIP_Norminal
+WBS_BIP_Nominal
 v0.0.1 单轮正常工作模式（绿色液压管路供压）下的无故障模型
 v0.0.2 单轮正常/备用工作模式（绿色/蓝色液压管路供压）下的无故障模型
 v0.0.3 单轮冗余BSCU双工作模式（绿色/蓝色液压管路供压）下的无故障模型
@@ -10,10 +10,10 @@ WBS_BIP_fault_v0.0.2
 
 WBS_BIP_fault_v0.1.0
 在原有的模型基础上包含了Power Supply, BSCU, HydraulicPump，Shutoff Valve和 Meter Valve五个模块的故障模型
-完成对单轮正常工作模式（绿色液压管路供压）下的故障模型建模，对应WBS_BIP_Norminal_v0.0.2
+完成对单轮正常工作模式（绿色液压管路供压）下的故障模型建模，对应WBS_BIP_Nominal_v0.0.1
 
-Todo: WBS_BIP_Norminal_v0.0.3模型的故障建模
+Todo: WBS_BIP_Nominal_v0.0.3模型的故障建模
                包括Selector Valve, Blue Hydraulic Pump, Accumulator, Anti-skid Valve四个新组件的故障
 
-Todo: WBS_BIP_Norminal_v0.0.4模型的故障建模
+Todo: WBS_BIP_Nominal_v0.0.4模型的故障建模
 	主要测试需求转换为LTL性质后在SBIP中的仿真验证效果
