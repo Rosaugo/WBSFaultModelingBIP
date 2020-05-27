@@ -3,10 +3,27 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{url}
+\usepackage{enumerate}
+\usepackage{makecell}
+\usepackage{listings}
+\usepackage{wrapfig}
+\usepackage{paralist}
+\usepackage{xspace}
+\usepackage{color}
+\usepackage{times}
+\usepackage{proof}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{capt-of}
+
+\input{macros}
+
+\newtheorem{definition}{Definition}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -51,7 +68,156 @@ Giving introduction of BIP framework, BIP toolset, SBIP and, on the other hand, 
 \section{Preliminaries}
 
 \subsection{The BIP Framework}
-Giving an introduction of BIP Framework here.
+We use architecture diagrams \cite{} to model the architecture styles in BIP.
+An architecture diagram consists of a set of component types, with associated cardinality constraints representing the
+expected number of instances of each component type and a set of connector motifs.
+Connector motifs, which define sets of BIP connectors, are non-empty sets of port types, each labelled as either a trigger or a synchron.
+Each port type has a cardinality constraint representing the expected number of port instances
+per component instance and two additional constraints: multiplicity and degree,
+represented as a pair m : d. Multiplicity constrains the number of instances of
+the port type that must participate in a connector defined by the motif; degree
+constrains the number of connectors attached to any instance of the port type.
+
+In this section, we present the BIP model with multiparty synchronization and data transfer.A BIP model is a parallel composition of a set of components.
+A BIP component is formally defined as an automaton extended with linear integer arithmetic as follows.
+
+\begin{definition} [BIP component]
+	\label{component-def}
+	Given a finite set of variables $\bipvar{}$, a BIP component is defined as a tuple
+	$\comp{} = \mktuple{\bipvar{}, \locs{}, \ports{}, \edges{}, \ell}$, where
+	\begin{inparaenum}
+		\item $\locs{}$ is a finite set of control locations;
+		\item $\ports{}$ is a finite set of communication ports;
+		\item $\edges{} \subseteq \locs{} \times \ports{} \times \bexp{\bipvar{}} \times \expr{\bipvar{}} \times \locs{}$
+		is a finite set of transition edges extended with guards in $\bexp{\bipvar{}}$
+		and operations in $\expr{\bipvar{}}$;
+		\item $\ell \in \locs{}$ is an initial control location.
+	\end{inparaenum}
+\end{definition}
+
+Transition edges in a component are labeled by ports, which form the interface of the component.
+We assume that, from each control location,
+every pair of outgoing transitions have different ports,
+and the ports of different components are disjoint.
+In other words, transitions with the same ports in the component are not enabled simultaneously.
+Given a component violating such assumptions,
+one can easily transform it into the required form by renaming the ports,
+while retaining the BIP expressiveness power.
+To ease the presentation, we denote in the sequel the id of the unique component
+where port $p$ is defined by $\portid{p}$.
+
+%Given a tuple of component types $\overline{\comptype{}} = \mktuple{\comptype{1},\ldots, \comptype{k}}$,
+%and a tuple of natural numbers $\overline{n} = \mktuple{n_{1}, \ldots, n_{k}}$,
+%where $n_{i}$ represents the number of instantiations of $\comptype{i}$,
+%
+
+We denote by $\components = \{\comp{i} ~|~ i\in [1,n]\}$ a set of components.
+%instantiated from $\overline{\comptype{}}$.
+%where $\comptype{i}[j]$
+%$\comptype{i}[j] = \mktuple{\bipvar{i}[j] ,\locs{i}[j] ,\ports{i}[j], \edges{i}[j], \ell_{i}[j] }$
+%is the $j^{th}$ instantiation of component type $\comptype{i}$.
+%
+%Given a set of comoponents $\components$,
+In \BIP, coordinations of components are specified by using interactions.
+%and in \BIP an interaction is represented as a finite set of ports.
+
+\begin{definition} [Interaction]
+	\label{interaction}
+	An interaction for $\components $ is a tuple $\gamma = \mktuple{g, \mathcal{P}, f } $,
+	where $g \in \bexp{\bipvar{}}$, $f\in \expr{\bipvar{}}$ and
+	$\mathcal{P} \subseteq \bigcup_{i=1}^n \ports{i}$, $\mathcal{P} \neq \emptyset$, and
+	for all $i \in [1, n]$, $|\mathcal{P} \cap \ports{i}| \le 1$.
+\end{definition}
+
+Intuitively, an interaction defines a guarded multiparty synchronization with data transfer:
+when the guard $g$ of an interaction $\mathcal{P}$ is enabled,
+then the data transfer specified by $f$ can be executed, and
+after that the transitions labelled by the ports in $\gamma$ can be taken simultaneously.
+%
+We denote by $\Gamma$ a finite set of interactions.
+A \BIP model is constructed by composing a number of components with interactions.
+
+\begin{definition} [\BIP Model]
+	A \BIP model $\bipmodel$ is a tuple $\mktuple{\components,\Gamma}$,
+	where $\components$ is a finite set of components,
+	and $\Gamma$ is a finite set of interactions for $\components$.
+\end{definition}
+
+We do not take priority into account in this paper, as in the previous work~\cite{dfinder10,tgc15},
+since adding priority will not introduce any errors.
+If a model without priority is safe, then after adding priority constraints it remains safe.
+We use a simple mutual exclusion protocol to illustrate \BIP.
+
+%\input{ticket-bip}
+
+A state of a \BIP model is a tuple $c = \langle \compstate{1}, \ldots, \compstate{n} \rangle $,
+where for all $i \in [1,n] $, $l_i \in \locs{i} $ and $\mathbf{V}_i $ is a valuation of $\bipvar{i}$.
+%
+%We denote by $c(i,j), i\in[1,k]$ the state $\mktuple{l_{i}^{j}, s_{i}^{j}}$ of component $\comptype{i}[j]$.
+%$c_0=\mktuple{\mktuple{l_1,s_1},\ldots, \ldots, \mktuple{l_n,s_n}}$
+A state $c_{0}$ is initial if for all $i \in [1,n]$,
+$l_i = \ell_{i}$ and $\mathbf{V}_{i}$ is the initial valuation of $\bipvar{i}$.
+%
+A state $c$ is an error if for some $i \in [1,n]$, $l_{i}$ is an error location.
+%
+We say an interaction $\gamma \in \Gamma$ is enabled on a state $c$ if
+for every component $\comp{i} \in \components$,
+such that $\gamma \cap \ports{i} \neq \emptyset$,
+%
+there is an edge $\mktuple{l_i, \gamma \cap \ports{i}, g_i, f_i, l_{i}' } \in \edges{i}$
+and  $\mathbf{V}_{i} \models g_i $.
+%
+The labeled transition system semantics of a \BIP model is defined as follows.
+
+\begin{definition} [\BIP operational semantics]
+	\label{operational-semantics}
+	Given a \BIP model $\bipmodel=\mktuple{\components,\Gamma}$,
+	its operational semantics is defined by a labeled transition system
+	$\TS{\BIP} = \mktuple{\mathcal{C}, \Sigma, \mathcal{R}, \mathcal{C}_{0}}$, where
+	%
+	\begin{enumerate}
+		\item $\mathcal{C}$ is the set of states,
+		\item $\Sigma = \Gamma $,
+		\item $\mathcal{R}$ is the set of transitions,
+		and we say that there is a transition from a state $c$
+		%$c=\mktuple{\mktuple{l_1,s_1}, \ldots, \mktuple{l_n,s_n}} $
+		to another state $c'$,
+		%$c'=\mktuple{\mktuple{l_1',s_1'}, \ldots, \mktuple{l_n',s_n'}}$
+		if there is an interaction $\gamma $ such that,
+		%
+		\begin{enumerate}
+			%\begin{inparaenum}[(i)]
+			\item $\gamma$ is enabled in $c$;
+			\item for all $\comp{i} \in \mathbb{B}$ such that
+			$\gamma \cap \ports{i} \neq \emptyset$, there is an edge
+			$\mktuple{l_i, \gamma \cap \ports{i}, g_i, f_i, l_i'} \in \edges{i} $,
+			%and if $f_i = x := e $,
+			then $\mathbf{V}'_{i} = \mathbf{V}_{i}[\bipvar{} / f_i(\bipvar{})]$;
+			\item for all $\comp{i} \in \mathbb{B} $ such that
+			$\gamma \cap \ports{i} = \emptyset $,
+			$l_i' = l_i$ and $\mathbf{V}_i' = \mathbf{V}_i$.
+			%\end{inparaenum}
+		\end{enumerate}
+		\item $\mathcal{C}_{0}$ is the set of initial states.
+	\end{enumerate}
+\end{definition}
+
+%We denote by $c \overset{\gamma} \rightarrow c'$ that
+%there is a transition from state $c$ to state $c'$, following the interaction $\gamma$.
+%
+%We denote by $\rho$
+%
+%A state $c$ % $c=\mktuple{\mktuple{l_1,s_1}, \ldots, \mktuple{l_n,s_n}}$
+%is reachable if there is a trace
+%$c_0, c_1, \ldots, c_k$ such that
+%$c_0 \xrightarrow{\gamma_1} c_1 \xrightarrow{\gamma_2} \ldots \xrightarrow{\gamma_k} c $,
+%from an initial configuration $c_{0}$ to $ c$.
+%
+In this paper, we do not use temporal logics to specify safety properties,
+but recognize a set of locations as error locations.
+A \BIP model is safe if no error states are reachable.
+Notice that any safety property can be encoded as a reachability
+problem by necessarily creating additional components.
 
 \subsection{Statistical Model Checking}
 Giving an introduction of Statistical Model Checking here.
@@ -62,11 +228,26 @@ The Wheel Brake System(WBS) description is introducted in Aerospace Information 
 
 \begin{figure}[htbp]
 	\centerline{\includegraphics[width=85mm]{figure/Nominal.JPG}}
-	\caption{The nominal WBS BIP model}
+	\caption{The WBS BIP model of the nominal behavior}
 	\label{WBS_BIP_Nominal}
 \end{figure}
 
+Figure 1 shows the WBS BIP model of the nominal behavior. The WBS is composed of an electronic control system and a physical system. The majority of the electronic control system is Braking System Control Unit(BSCU). The WBS receives several signals including the brake pedal position from upper level avionics system and electically forwards them to the BSCU. The BSCU also receives two power inputs from two independent power supply resources. As the result of computation, the BSCU in turn produces the system validity command, anti-skid command and braking command to the physical system. The physical system includes two hydraulic pressure lines which are supplied by the green/blue hydraulic pump respectively.
 
+\emph{Operation Mode.} There are three operation modes for physical system. In \emph{normal mode}, the wheel brake is supported by the main hydraulic circuit, refers to the green hydraulic circuit. In \emph{alternate mode}, the wheel brake is supported by a second hydraulic circuit. This mode is standby and is selected automatically when the normal system fails. An accumulator supplies the \emph{emergency mode} when blue hydraulic supply is lost and the normal mode is not available.
+
+\emph{Braking System Control Unit(BSCU).} According to the AIR6110 standard, for redundancy, the BSCU is composed of two independent channels, each channel has its own power supply and avioncs system inputs. Each channel has a command subsystem and a monitor subsystem. The monitor system generates the system validity command and the command system cauculates the anti-skid command and braking command. The BSCU will make an ultimate judgement call between each command output by the two channels respectively.
+
+\emph{Hydraulic Pump.} In nominal system behavior, both the green and blue hydraulic pumps provide enough hydraulic pressure for their green/blue hydraulic circuit respectively. An accumulator is also a hydraulic pump to provide an emergency reserve of hydraulic pressure for blue hydraulic circuit in emergency mode.
+
+\emph{Shutoff Valve.} The shutoff valve responds the system validity command from BSCU to decide whether to apply the hydraulic pressure to the selector valve in green hydraulic circuit or not. The system validity command is modeled in BIP as a boolean value.
+
+\emph{Selector Valve.} The selector valve control the switch between green and blue hydraulic circuits mechanically. It outputs appropriate pressure from green hydraulic pump, and switches to blue hydraulic circuit as soon as it detects a lack of pressure in the green hydraulic circuit. In BIP model, the component selector valve 
+only outputs pressure from either the green hydraulic circuit input or blue hydraulic circuit input at a time.
+
+\emph{Anti-Skid Valve.} The anti-skid valve follows anti-skid command to control hydraulic pressure to the metering valve. It is used to restrict the hydraulic pressure to the wheel brake in order to prevent locking of the wheel. Wheel skid happens when the wheel is locked but the vehicle keeps a relative slid speed to the ground. We consider a loss of anti-skid function as a fault and will integrate it into nominal BIP model.
+
+\emph{Metering Valve.} Metering valve, or metering servo valve controls pressure to the demanded level and provides regulation for the anti-skid function.
 
 \section{Integrating Fault Trees Into WBS BIP model}
 Before you begin to format your paper, first write and save the content as a 
