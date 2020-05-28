@@ -3,7 +3,6 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{url}
@@ -20,6 +19,8 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{capt-of}
 \usepackage{enumitem}
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
 
 \input{macros}
 
@@ -229,7 +230,7 @@ The Wheel Brake System(WBS) description is introducted in Aerospace Information 
 The WBS provides braking on the main gear wheels used to provide safe retardation of the aircraft during taxiing and landing phases, and in the event of a rejected take-off. The wheel brakes also prevent unintended aircraft motion when parked, and may be used to provide differential braking for aircraft directional control. A secondary function of the WBS is to stop main gear wheel rotation upon gear retraction. Braking on the ground is commanded manually, via brake pedals, or automatically (autobrake) without the need for pedal application.
 
 \begin{figure}[htbp]
-	\centerline{\includegraphics[width=85mm]{figure/Nominal.JPG}}
+	\centerline{\includegraphics[width=85mm]{figure/Nominal.eps}}
 	\caption{The WBS BIP model of the nominal behavior}
 	\label{WBS_BIP_Nominal}
 \end{figure}
@@ -271,15 +272,33 @@ We follow the standard to advance our BIP model. As a result, our WBS BIP model 
 \emph{ARCH4.} Since architecture three has been simulated and the results of the modeling for each system component are that the schematic of the braking system architecture does not work and there are some mistakes in the schematic. Architecture four is established to avoid the risk of hydraulic supply to wheel brake being possible in normal mode by accumulator. An input is added in ARCH4 to the selector valve corresponding to the validity of the control system. Pedal position signal is input in front of the anti-skid valve in blue hydraulic pressure line and the accumulator is moved in front of the selector valve.
 
 \section{Integrating Fault Trees Into WBS BIP model}
-\textcolor{red}{
-Will be done no later than May 28th.
-}
-
-\subsection{Fault trees for the WBS}
 
 \subsection{Behavioral fault modeling}
+In this section, we describe how to integrate a component's fault behavior from system fault tree into the BIP model. First, we decompose the system fault tree. Then we deduce a fault behavior from each root node of the system fault tree. Next, we generate a BIP component with fault behavior according to its nominal behavior BIP model. Afterwards, we put the behavioral fault component and the nominal behavior component together with a manager component deciding and monitoring the activition of both fault and nominal behavior components. Finally, we modifies the connection between each component to ensure the input and output ports are the same as the original BIP component. The result of the integration is a fault-based BIP component.
+
+\textbf{Example 1.} We take a commonly used valve component as an example. In general, a valve is used to control the passage of hydraulic pressure. When the valve is open, the output hydraulic pressure is equal to the input hydraulic pressure, indicates that the valve currently allows hydraulic pressure to pass. When the valve is close, the output hydraulic pressure is zero, indicates a rejection of hydraulic passage.
+
+We deduce two fault behaviors for the valve component, the stack-at-open fault and stack-at-close fault. For stack-at-open fault, the output hydraulic pressure is always the same as the input, while for stack-at-close fault, the output hydraulic pressure is always zero.
+
+\textcolor{red}{
+	Figure 2 meets problem, need to check with W.Q
+}
+
+Figure 2 shows a valve compound containing a valve component with nominal behavior, two valve components with faulty behavior and a manager component.
+
+\subsection{Fault trees for the WBS}
+Figure 3 shows a fault tree for "Loss of wheel braking" event, which is based on the AIR6110 standard description. Loss of wheel braking is caused either through the Loss of operaton of physical system or due to the loss of BSCU. We focus on the leaf nodes which represent fault behavior for their component respectively. Notice that the expansion of the fault tree nodes "Loss of BSCU channel 1/2" are carried out but not included in figure 3 for the sake of brevity. 
+
+\begin{figure*}[htbp]
+	\centerline{\includegraphics[width=165mm]{figure/fault_tree.eps}}
+	\caption{Fault tree for WBS ARCH4}
+	\label{WBS_BIP_Nominal}
+\end{figure*}
 
 \subsection{Modified BIP model for the WBS}
+\textcolor{red}{
+Will be finished on May.28th
+}
 
 \section{Verification Methodology and Experiments}
 \textcolor{red}{

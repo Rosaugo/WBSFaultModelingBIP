@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.1.4)  27 MAY 2020 15:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.1.4)  28 MAY 2020 10:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -187,30 +187,6 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(c:/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
-
-(c:/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks20
-)
-(c:/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
-
-(c:/texlive/2018/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
-)
-(c:/texlive/2018/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
-File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
-)
-Package graphics Info: Driver file: pdftex.def on input line 99.
-
-(c:/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
-))
-\Gin@req@height=\dimen135
-\Gin@req@width=\dimen136
-)
 (c:/texlive/2018/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2018/08/11 v2.0j Standard LaTeX package
 Package textcomp Info: Sub-encoding information:
@@ -375,6 +351,10 @@ Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+(c:/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
 Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
 Package xcolor Info: Model `RGB' extended on input line 1364.
@@ -391,38 +371,42 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 (c:/texlive/2018/texmf-dist/tex/latex/tools/enumerate.sty
 Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
-\@enLab=\toks21
+\@enLab=\toks20
 )
 (c:/texlive/2018/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 
 (c:/texlive/2018/texmf-dist/tex/latex/tools/array.sty
 Package: array 2018/11/13 v2.4j Tabular extension package (FMi)
-\col@sep=\dimen137
+\col@sep=\dimen135
 \ar@mcellbox=\box31
-\extrarowheight=\dimen138
-\NC@list=\toks22
+\extrarowheight=\dimen136
+\NC@list=\toks21
 \extratabsurround=\skip47
 \backup@length=\skip48
 \ar@cellbox=\box32
 )
-\rotheadsize=\dimen139
+\rotheadsize=\dimen137
 \c@nlinenum=\count107
-\TeXr@lab=\toks23
+\TeXr@lab=\toks22
 )
 (c:/texlive/2018/texmf-dist/tex/latex/listings/listings.sty
+(c:/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+)
 \lst@mode=\count108
 \lst@gtempboxa=\box33
 \lst@token=\toks24
 \lst@length=\count109
-\lst@currlwidth=\dimen140
+\lst@currlwidth=\dimen138
 \lst@column=\count110
 \lst@pos=\count111
-\lst@lostspace=\dimen141
-\lst@width=\dimen142
+\lst@lostspace=\dimen139
+\lst@width=\dimen140
 \lst@newlines=\count112
 \lst@lineno=\count113
-\lst@maxwidth=\dimen143
+\lst@maxwidth=\dimen141
 
 (c:/texlive/2018/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2018/09/02 1.7 (Carsten Heinz)
@@ -436,8 +420,8 @@ File: listings.cfg 2018/09/02 1.7 listings configuration
 Package: listings 2018/09/02 1.7 (Carsten Heinz)
 
 (c:/texlive/2018/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen144
-\WF@size=\dimen145
+\wrapoverhang=\dimen142
+\WF@size=\dimen143
 \c@WF@wrappedlines=\count116
 \WF@box=\box35
 \WF@everypar=\toks25
@@ -458,25 +442,25 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
 (c:/texlive/2018/texmf-dist/tex/latex/lkproof/proof.sty
-\inferLineSkip=\dimen146
-\inferLabelSkip=\dimen147
-\@LeftOffset=\dimen148
-\@RightOffset=\dimen149
-\@SavedLeftOffset=\dimen150
-\UpperWidth=\dimen151
-\LowerWidth=\dimen152
-\LowerHeight=\dimen153
-\UpperLeftOffset=\dimen154
-\UpperRightOffset=\dimen155
-\UpperCenter=\dimen156
-\LowerCenter=\dimen157
-\UpperAdjust=\dimen158
-\RuleAdjust=\dimen159
-\LowerAdjust=\dimen160
-\RuleWidth=\dimen161
-\HLabelAdjust=\dimen162
-\VLabelAdjust=\dimen163
-\WidthAdjust=\dimen164
+\inferLineSkip=\dimen144
+\inferLabelSkip=\dimen145
+\@LeftOffset=\dimen146
+\@RightOffset=\dimen147
+\@SavedLeftOffset=\dimen148
+\UpperWidth=\dimen149
+\LowerWidth=\dimen150
+\LowerHeight=\dimen151
+\UpperLeftOffset=\dimen152
+\UpperRightOffset=\dimen153
+\UpperCenter=\dimen154
+\LowerCenter=\dimen155
+\UpperAdjust=\dimen156
+\RuleAdjust=\dimen157
+\LowerAdjust=\dimen158
+\RuleWidth=\dimen159
+\HLabelAdjust=\dimen160
+\VLabelAdjust=\dimen161
+\WidthAdjust=\dimen162
 \@UpperPart=\box36
 \@LowerPart=\box37
 \@LabelPart=\box38
@@ -525,49 +509,32 @@ Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 (c:/texlive/2018/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2018/11/30 v3.6 Customized lists
 \labelindent=\skip56
-\enit@outerparindent=\dimen165
+\enit@outerparindent=\dimen163
 \enit@toks=\toks30
 \enit@inbox=\box42
 \enitdp@description=\count126
-) (./macros.tex)
-\c@definition=\count127
-
-(./conference_101719.aux)
-\openout1 = `conference_101719.aux'.
-
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 30.
- (c:/texlive/2018/texmf-dist/tex/latex/base/ts1cmr.fd
-File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 30.
--- Lines per column: 56 (exact).
-(c:/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count128
-\scratchdimen=\dimen166
-\scratchbox=\box43
-\nofMPsegments=\count129
-\nofMParguments=\count130
-\everyMPshowfont=\toks31
-\MPscratchCnt=\count131
-\MPscratchDim=\dimen167
-\MPnumerator=\count132
-\makeMPintoPDFobject=\count133
-\everyMPtoPDFconversion=\toks32
-) (c:/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+(c:/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(c:/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+(c:/texlive/2018/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(c:/texlive/2018/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+)
+\Gin@req@height=\dimen164
+\Gin@req@width=\dimen165
+)
+(c:/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf.sty
+Package: epstopdf 2016/05/15 v2.6 Conversion with epstopdf on the fly (HO)
+
+(c:/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
 (c:/texlive/2018/texmf-dist/tex/generic/oberdiek/infwarerr.sty
@@ -622,27 +589,69 @@ G,.JBIG2,.JB2,.eps]
 (c:/texlive/2018/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
-))
-\c@lstlisting=\count134
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 54.
-LaTeX Font Info:    Try loading font information for U+msa on input line 54.
+)))
+(./macros.tex)
+\c@definition=\count127
+ (./conference_101719.aux
 
-(c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
+LaTeX Warning: Label `WBS_BIP_Nominal' multiply defined.
+
+)
+\openout1 = `conference_101719.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 31.
+ (c:/texlive/2018/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 31.
+
+-- Lines per column: 56 (exact).
+(c:/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count128
+\scratchdimen=\dimen166
+\scratchbox=\box43
+\nofMPsegments=\count129
+\nofMParguments=\count130
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count131
+\MPscratchDim=\dimen167
+\MPnumerator=\count132
+\makeMPintoPDFobject=\count133
+\everyMPtoPDFconversion=\toks32
+)
+\c@lstlisting=\count134
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 55.
+LaTeX Font Info:    Try loading font information for U+msa on input line 55.
+ (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 54.
+LaTeX Font Info:    Try loading font information for U+msb on input line 55.
 
 (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-LaTeX Warning: Citation `dfinder10' on page 1 undefined on input line 149.
+LaTeX Warning: Citation `dfinder10' on page 1 undefined on input line 150.
 
 
-LaTeX Warning: Citation `tgc15' on page 1 undefined on input line 149.
+LaTeX Warning: Citation `tgc15' on page 1 undefined on input line 150.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--174
+Underfull \hbox (badness 10000) in paragraph at lines 157--175
 []\OT1/ptm/m/n/10 A state of a $[]$ model is a tu-ple $\OML/cmm/m/it/10 c \OT1/
 cmr/m/n/10 =
  []
@@ -651,12 +660,45 @@ cmr/m/n/10 =
 
 
 ]
-<figure/Nominal.JPG, id=19, 724.20563pt x 397.485pt>
-File: figure/Nominal.JPG Graphic file (type jpg)
-<use figure/Nominal.JPG>
-Package pdftex.def Info: figure/Nominal.JPG  used on input line 232.
-(pdftex.def)             Requested size: 241.84842pt x 132.73524pt.
- [2 <./figure/Nominal.JPG>] [3]
+Package epstopdf Info: Source file: <figure/Nominal.eps>
+(epstopdf)                    date: 2020-05-28 10:45:59
+(epstopdf)                    size: 1992879 bytes
+(epstopdf)             Output file: <figure/Nominal-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=figure/Nominal-eps-convert
+ed-to.pdf figure/Nominal.eps>
+(epstopdf)             \includegraphics on input line 233.
+runsystem(repstopdf --outfile=figure/Nominal-eps-converted-to.pdf figure/Nomina
+l.eps)...executed safely (allowed).
+
+Package epstopdf Info: Result file: <figure/Nominal-eps-converted-to.pdf>
+(epstopdf)                    date: 2020-05-28 10:47:00
+(epstopdf)                    size: 47793 bytes.
+<figure/Nominal-eps-converted-to.pdf, id=19, 963.6pt x 542.025pt>
+File: figure/Nominal-eps-converted-to.pdf Graphic file (type pdf)
+<use figure/Nominal-eps-converted-to.pdf>
+Package pdftex.def Info: figure/Nominal-eps-converted-to.pdf  used on input lin
+e 233.
+(pdftex.def)             Requested size: 241.84842pt x 136.03523pt.
+ [2 <./figure/Nominal-eps-converted-to.pdf>]
+Underfull \vbox (badness 1400) has occurred while \output is active []
+
+Package epstopdf Info: Source file: <figure/fault_tree.eps>
+(epstopdf)                    date: 2020-05-28 10:19:32
+(epstopdf)                    size: 217902 bytes
+(epstopdf)             Output file: <figure/fault_tree-eps-converted-to.pdf>
+(epstopdf)                    date: 2020-05-28 10:21:46
+(epstopdf)                    size: 10563 bytes
+(epstopdf)             Command: <repstopdf --outfile=figure/fault_tree-eps-conv
+erted-to.pdf figure/fault_tree.eps>
+(epstopdf)             \includegraphics on input line 293.
+Package epstopdf Info: Output file is already uptodate.
+<figure/fault_tree-eps-converted-to.pdf, id=71, 963.6pt x 542.025pt>
+File: figure/fault_tree-eps-converted-to.pdf Graphic file (type pdf)
+<use figure/fault_tree-eps-converted-to.pdf>
+Package pdftex.def Info: figure/fault_tree-eps-converted-to.pdf  used on input 
+line 293.
+(pdftex.def)             Requested size: 469.47046pt x 264.07277pt.
+ [3]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -668,21 +710,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
-] (./conference_101719.aux)
+[4 <./figure/fault_tree-eps-converted-to.pdf>] (./conference_101719.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 7161 strings out of 492616
- 102291 string characters out of 6132769
- 186032 words of memory out of 5000000
- 10940 multiletter control sequences out of 15000+600000
+ 7172 strings out of 492616
+ 102771 string characters out of 6132769
+ 186103 words of memory out of 5000000
+ 10948 multiletter control sequences out of 15000+600000
  45520 words of font info for 95 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,11n,35p,740b,306s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,11n,35p,768b,306s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2018/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2018/texmf-dist/fonts/type1
@@ -696,10 +739,10 @@ dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb><c:/texlive/2018/texmf-dist/
 fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/ti
 mes/utmbi8a.pfb><c:/texlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c
 :/texlive/2018/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on conference_101719.pdf (4 pages, 234646 bytes).
+Output written on conference_101719.pdf (4 pages, 195246 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 53 compressed objects within 1 object stream
+ 136 PDF objects out of 1000 (max. 8388607)
+ 93 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
