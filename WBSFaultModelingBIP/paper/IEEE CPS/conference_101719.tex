@@ -21,10 +21,23 @@
 \usepackage{enumitem}
 \usepackage[pdftex]{graphicx}
 \usepackage{epstopdf}
+\usepackage{diagbox}
+\usepackage{multirow}
+\usepackage{hyperref}
 
 \input{macros}
 
 \newtheorem{definition}{Definition}
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=blue,
+	urlcolor=blue,
+	citecolor=cyan,
+}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -274,14 +287,14 @@ We follow the standard to advance our BIP model. As a result, our WBS BIP model 
 \section{Integrating Fault Trees Into WBS BIP model}
 
 \subsection{Behavioral fault modeling}
-In this section, we describe how to integrate a component's fault behavior from system fault tree into the BIP model. First, we decompose the system fault tree. Then we deduce a fault behavior from each root node of the system fault tree. Next, we generate a BIP component with fault behavior according to its nominal behavior BIP model. Afterwards, we put the behavioral fault component and the nominal behavior component together with a manager component deciding and monitoring the activition of both fault and nominal behavior components. Finally, we modifies the connection between each component to ensure the input and output ports are the same as the original BIP component. The result of the integration is a fault-based BIP component.
+In this section, we describe how to integrate a component's fault behavior from system fault tree into the BIP model. First, we decompose the system fault tree. Then we deduce a fault behavior from each leaf node of the system fault tree. Next, we generate a BIP component with fault behavior according to its nominal behavior BIP model. Afterwards, we put the behavioral fault component and the nominal behavior component together with a manager component deciding and monitoring the activition of both fault and nominal behavior components. Finally, we modifies the connection between each component to ensure the input and output ports are the same as the original BIP component. The result of the integration is a fault-based BIP component.
 
 \textbf{Example 1.} We take a commonly used valve component as an example. In general, a valve is used to control the passage of hydraulic pressure. When the valve is open, the output hydraulic pressure is equal to the input hydraulic pressure, indicates that the valve currently allows hydraulic pressure to pass. When the valve is close, the output hydraulic pressure is zero, indicates a rejection of hydraulic passage.
 
 We deduce two fault behaviors for the valve component, the stack-at-open fault and stack-at-close fault. For stack-at-open fault, the output hydraulic pressure is always the same as the input, while for stack-at-close fault, the output hydraulic pressure is always zero.
 
 \textcolor{red}{
-	Figure 2 meets problem, need to check with W.Q
+	Figure 2 need to check with W.Q
 }
 
 Figure 2 shows a valve compound containing a valve component with nominal behavior, two valve components with faulty behavior and a manager component.
@@ -291,20 +304,57 @@ Figure 3 shows a fault tree for "Loss of wheel braking" event, which is based on
 
 \begin{figure*}[htbp]
 	\centerline{\includegraphics[width=165mm]{figure/fault_tree.eps}}
-	\caption{Fault tree for WBS ARCH4}
+	\caption{Fault tree for a loss of WBS occurrence under ARCH4}
 	\label{WBS_BIP_Nominal}
 \end{figure*}
 
 \subsection{Modified BIP model for the WBS}
-\textcolor{red}{
-Will be finished on May.28th
-}
+In this section, we give a whole view of modified BIP model which is integrated with fault tree introduced in section \emph{B} using the methodology provided in seciton \emph{A}.
+
+Table 1 shows metrics for the different architectures. The later the design version of the architecture, the greater the scale of the BIP model. ARCH1 shows a large delta with other three architectures. From ARCH2 to ARCH3, there is a differ from the design of the BSCU. For ARCH2, the AIR6110 standard only requires a redundency of BSCU which results in a WBS model including two identical BSCU system. For ARCH3, motivated by trade studies on ARCH2, the strcture is modified from two BSCUs to a BSCU with dual channels. Also, as the result of integration, the extended BIP model with fault behavior presents a larger scale than the nominal BIP model. ARCH3 and ARCH4 show the closest metrics for there is only a little change in the physical system.
+
+The full system implementation can be found at \href{https://github.com/Rosaugo/WBSFaultModelingBIP}{https://github.com/Rosaugo/WBSFaultModelingBIP}. You can find the nominal WBS model or the BIP model extended with the faults described in the fault tree in section \emph{B}.
+
+\begin{table}[htbp]
+	\caption{BIP Nominal/Fault Model statistics}
+	\begin{center}
+\begin{tabular}{|c|c|@{}p{0.002\linewidth}<{\centering}@{}|c|c|c|c|}
+	\hline
+	\multicolumn{2}{|c|}{}&&{ARCH1}&{ARCH2}&{ARCH3}&{ARCH4}\\
+	\hline
+	\multirow{2}*{\tabincell{c}{Component\\types}}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+	\multirow{2}*{\tabincell{c}{Compound\\types}}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+	\multirow{2}*{Max depth}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+	\multirow{2}*{Variables}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+	\multirow{2}*{\tabincell{c}{Internal\\ports}}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+	\multirow{2}*{\tabincell{c}{External\\ports}}&{Nominal}&&&&&\\
+	\cline{2-7}
+	&{Extended}&&&&&\\
+	\hline
+\end{tabular}
+		\label{tab1}
+	\end{center}
+\end{table}
 
 \section{Verification Methodology and Experiments}
 \textcolor{red}{
 Giving an overview of verification methodology and experiments here.
 }
-
 
 \subsection{WBS Requirements formalization and decomposition}
 The AIR6110 document contains several requirements for the WBS. These can be grouped in two main categories: Requirements corresponding to safety, e.g., \emph{the loss of all wheel braking shall be extremely remote}, and others, e.g., \emph{the WBS shall have at least two hydraulic pressure sources}.
@@ -314,47 +364,31 @@ Giving an explaination of how to translate WBS requirements to LTL specification
 }
 
 \subsection{Experiments and results}
+\textcolor{red}{
+Briefly introduction.
+}
 
 \subsubsection{Probability Estimation}
+\ 
+\newline 
+\textcolor{red}{
+\indent Will be texted after further experiments finished.
+}
 
 \subsubsection{Parametric exploration}
+\ 
+\newline 
+\textcolor{red}{
+	\indent Will be texted after further experiments finished.
+}
 
 \section*{Acknowledgment}
-
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
-
-\section*{References}
-
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
-
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
-
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
-
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
+\textcolor{red}{
+This work was supported by * (check with Prof.Miao). The author wish to thank * (check with everyone)
+}
 
 \begin{thebibliography}{00}
 \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
 \end{thebibliography}
 
 \end{document}

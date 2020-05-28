@@ -1,0 +1,17 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Preliminaries}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{The BIP Framework}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Statistical Model Checking}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{The AIR6110 Wheel Brake System}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{The WBS architecture and nominal behavior}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{The WBS BIP architecture development process}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Integrating Fault Trees Into WBS BIP model}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Behavioral fault modeling}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{Fault trees for the WBS}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{Modified BIP model for the WBS}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Verification Methodology and Experiments}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{WBS Requirements formalization and decomposition}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{Experiments and results}{section.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Probability Estimation}{subsection.5.2}% 15
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Parametric exploration}{subsection.5.2}% 16
+\BOOKMARK [1][-]{section*.2}{References}{}% 17
