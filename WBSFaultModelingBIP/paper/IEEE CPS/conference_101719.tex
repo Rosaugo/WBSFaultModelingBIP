@@ -43,7 +43,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Behavioral fault modeling and analysis with SBIP:
+\title{Behavioral fault modeling and analysis with BIP:\\
 	A Wheel Brake System Case Study\\}
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Xudong Tang}
@@ -68,8 +68,8 @@ wkmiao@sei.ecnu.edu.cn}
 \maketitle
 
 \begin{abstract}
-Behavior-Interaction-Priority(BIP) is a component-based framework for modeling complex systems. According to BIP framework, system can be represented by a set of components specifying the behavior which is synchronized and communicated by connectors that corresponds to subset of interactions.
-Behavioral fault modeling and analysis refers to an integration of model based system design and safety analysis. In this paper, we integrate fault-tree-based safety analysis into BIP model and using statistical model checking engine for the BIP framework(SBIP) to offer a stochastic information to components and the entire system. By using SBIP with statistic model checking, we verify system specification and calculate probability of fault issues. We also trace the simulation result to confirm the extended system model without fault keeps consistence of the norminal system model.  
+BIP(Behavior-Interaction-Priority) is a component-based framework for rigorous design of complex systems. Systems are modeled by a set of components and connectors.
+Behavioral fault modeling and analysis refers to an integration of model based system design and safety analysis. In this paper, we integrate faulttree-based safety analysis into BIP model and apply statistical model checking to verify system specification and calculate probability of fault issues. We also trace the simulation result to confirm the extended system model without fault keeps consistence of the norminal system model.  
 We illustrate an airplane wheel brake system meeting the industry standards as case study to show its advantage in analyzing fault behavior of safety-critical systems in aerospace practice.
 \end{abstract}
 
@@ -266,7 +266,7 @@ only outputs pressure from either the green hydraulic circuit input or blue hydr
 
 \emph{Metering Valve.} Metering valve, or metering servo valve controls pressure to the demanded level and provides regulation for the anti-skid function.
 
-\subsection{The WBS BIP architecture development process}
+\subsection{The WBS architecture mode in BIP}
 According to the AIR6110 standard, the system architecture evolves throughout the development life cycle and is tightly coupled with the requirements development (especially interface requirements) and is not finished until the requirements associated with the architecture have been validated.
 
 We follow the standard to advance our BIP model. As a result, our WBS BIP model has four versions corresponding to the four architectures in the AIR6110 standard. They are numbered from ARCH1 to ARCH4. Each architecture is obtained after design choices of different types.
@@ -308,7 +308,7 @@ Figure 3 shows a fault tree for "Loss of wheel braking" event, which is based on
 	\label{WBS_BIP_Nominal}
 \end{figure*}
 
-\subsection{Modified BIP model for the WBS}
+\subsection{Extended WBS Model with faults}
 In this section, we give a whole view of modified BIP model which is integrated with fault tree introduced in section \emph{B} using the methodology provided in seciton \emph{A}.
 
 Table 1 shows metrics for the different architectures. The later the design version of the architecture, the greater the scale of the BIP model. ARCH1 shows a large delta with other three architectures. From ARCH2 to ARCH3, there is a differ from the design of the BSCU. For ARCH2, the AIR6110 standard only requires a redundency of BSCU which results in a WBS model including two identical BSCU system. For ARCH3, motivated by trade studies on ARCH2, the strcture is modified from two BSCUs to a BSCU with dual channels. Also, as the result of integration, the extended BIP model with fault behavior presents a larger scale than the nominal BIP model. ARCH3 and ARCH4 show the closest metrics for there is only a little change in the physical system.
