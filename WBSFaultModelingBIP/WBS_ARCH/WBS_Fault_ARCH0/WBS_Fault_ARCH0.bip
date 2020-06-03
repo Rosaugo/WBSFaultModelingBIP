@@ -1,5 +1,6 @@
 @cpp(include="stdio.h")
-package WBS_Fault_1
+package WBS_Fault_ARCH0
+
 	// extern function printf for output
 	extern function printf (string, int)
 	extern function printf (string, int, int)
@@ -39,6 +40,58 @@ package WBS_Fault_1
 	connector type transCmd( WBSPort_t2 p1, WBSPort_t2 p2 )
 		define p1 p2
 		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	// Fault model for BSCU Module One
+	connector type sendBSCUFault( WBSPort_t2 p1, WBSPort_t2 p2)
+		data bool signal
+		export port WBSPort_t2 sendSignal(signal)
+		define p1' p2'
+		on p1 up { signal = p1.var; }
+		on p2 up { signal = p2.var; }
+	end
+
+	// Fault model for BSCU Module Two
+	connector type getBSCUFault( WBSPort_t2 p1, WBSPort_t2 p2 )
+		define p1 p2
+		on p1 p2 down { p2.var = p1.var; }
+	end
+
+	connector type getPWR( WBSPort_t2 p1)
+		data bool signal
+		export port WBSPort_t2 receiveSignal(signal)
+		define p1'
+		on p1 down { p1.var = signal; }
+	end
+
+	connector type getGSpeed( WBSPort_t1 p1)
+		data int signal
+		export port WBSPort_t1 receiveSignal(signal)
+		define p1'
+		on p1 down { p1.var = signal; }
+	end
+
+	connector type getWSpeed( WBSPort_t1 p1)
+		data int signal
+		export port WBSPort_t1 receiveSignal(signal)
+		define p1'
+		on p1 down { p1.var = signal; }
+	end
+
+	connector type getPP( WBSPort_t1 p1)
+		data int signal
+		export port WBSPort_t1 receiveSignal(signal)
+		define p1'
+		on p1 down { p1.var = signal; }
+	end
+
+	// Fault model for Power Supply
+	connector type sendPWR( WBSPort_t2 p1, WBSPort_t2 p2)
+		data bool signal
+		export port WBSPort_t2 sendSignal(signal)
+		define p1' p2'
+		on p1 up { signal = p1.var; }
+		on p2 up { signal = p2.var; }
 	end
 
 	// Fault model for Hydraulic Pump
@@ -104,6 +157,20 @@ package WBS_Fault_1
 		on p1 down { p1.var = signal; printf("signal received is %d\n", signal);}
 		on p2 down { p2.var = signal; printf("signal received is %d\n", signal);}
 		on p3 down { p3.var = signal; printf("signal received is %d\n", signal);}
+	end
+
+	connector type sendSYSVal ( WBSPort_t2 p1 )
+		data bool signal
+		export port WBSPort_t2 sendSignal(signal)
+		define p1'
+		on p1 up { signal = p1.var; }
+	end
+
+	connector type sendBRKASCMD ( WBSPort_t2 p1 )
+		data bool signal
+		export port WBSPort_t2 sendSignal(signal)
+		define p1'
+		on p1 up { signal = p1.var; }
 	end
 
 	// Atom types definitions
@@ -595,7 +662,7 @@ package WBS_Fault_1
 		// Priorities
 	end
 
-	atom type BSCU()
+	atom type BSCU_ModuleTwo()
 		// Variable declarations
 		data int WheelSpeed
 		data int PedalPosition
@@ -603,6 +670,7 @@ package WBS_Fault_1
 		data bool SystemValidity
 		data bool BrakeAntiSkidCMD
 		data bool Power
+		data bool LossBrakeCMD
 
 		// Port declarations
 		export port WBSPort_t1 receiveGSpeed ( GroundSpeed )
@@ -610,17 +678,23 @@ package WBS_Fault_1
 		export port WBSPort_t1 receivePP ( PedalPosition )
 		export port WBSPort_t2 sendSYSVal ( SystemValidity )
 		export port WBSPort_t2 sendBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_t2 receivePWR( Power )
+		export port WBSPort_t2 receiveBSCUFault ( LossBrakeCMD )
+		port Internal_Port Exec3ToAS1()
+		port Internal_Port Exec3ToAS2()
 
 		// Clock declarations
 
 		// Locations declaration
-		place Exec1, R1, R2, R3, P1, P2, Exec2, AS1, AS2
+		place Exec1, R0, R1, R2, R3, P1, P2, Exec2, Exec3, AS1, AS2
 
 		// Initial location declarations
 		initial to Exec1 do { BrakeAntiSkidCMD = false; SystemValidity = false; Power = true;}
 
 		// transitions
-		on receiveGSpeed from Exec1 to R1
+		on receivePWR from Exec1 to R0
+
+		on receiveGSpeed from R0 to R1
 
 		on receiveWSpeed from R1 to R2
 
@@ -638,12 +712,14 @@ package WBS_Fault_1
 
 		on sendSYSVal from P2 to Exec2
 
-		internal from Exec2 to AS1
-			provided(PedalPosition == 0 || WheelSpeed != GroundSpeed)
+		on receiveBSCUFault from Exec2 to Exec3
+
+		on Exec3ToAS1 from Exec3 to AS1
+			provided(PedalPosition == 0 || WheelSpeed != GroundSpeed || LossBrakeCMD)
 			do{BrakeAntiSkidCMD = false;}
 
-		internal from Exec2 to AS2
-			provided(PedalPosition != 0 && WheelSpeed == GroundSpeed)
+		on Exec3ToAS2 from Exec3 to AS2
+			provided(PedalPosition != 0 && WheelSpeed == GroundSpeed&& !LossBrakeCMD)
 			do{BrakeAntiSkidCMD = true;}
 
 		on sendBRKASCMD from AS1 to Exec1
@@ -748,6 +824,209 @@ package WBS_Fault_1
 		// Priorities
 	end
 
+	// Atom type for Power Supply
+	atom type PowerSupply_Normal()
+		// Variable declarations
+		data bool Power
+		data int ManageSignal
+
+		// Port declarations
+		export port WBSPort_t2 sendPWR ( Power )
+		export port WBSPort_t1 receiveManager (ManageSignal)
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec, Init, Init2
+
+		// Initial location declarations
+		initial to Init do { Power = true; }
+
+		// transitions
+		on receiveManager from Init to Init2
+
+		internal from Init2 to Exec
+			provided(ManageSignal == 0)
+			do { Power = true; }
+
+		internal from Init2 to Init
+			provided(ManageSignal != 0)
+
+		on sendPWR from Exec to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type PowerSupply_Loss()
+		// Variable declarations
+		data bool Power
+		data int ManageSignal
+
+		// Port declarations
+		export port WBSPort_t2 sendPWR ( Power )
+		export port WBSPort_t1 receiveManager (ManageSignal)
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec, Init, Init2
+
+		// Initial location declarations
+		initial to Init do { Power = true; }
+
+		// transitions
+		on receiveManager from Init to Init2
+
+		internal from Init2 to Exec
+			provided(ManageSignal == 1)
+			do { Power = false; }
+
+		internal from Init2 to Init
+			provided(ManageSignal != 1)
+
+		on sendPWR from Exec to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type BSCU_ModuleOne()
+		// Variable declarations
+		data bool LossBrakeCMD
+		data int ManageSignal
+
+		// Port declarations
+		export port WBSPort_t2 sendBSCUFault ( LossBrakeCMD )
+		export port WBSPort_t1 receiveManager (ManageSignal)
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec, Init, Init2
+
+		// Initial location declarations
+		initial to Init do { LossBrakeCMD = true; }
+
+		// transitions
+		on receiveManager from Init to Init2
+
+		internal from Init2 to Exec
+			provided(ManageSignal == 0)
+			do { LossBrakeCMD = true; }
+
+		internal from Init2 to Init
+			provided(ManageSignal != 0)
+
+		on sendBSCUFault from Exec to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	atom type BSCU_ModuleOne_Fault()
+		// Variable declarations
+		data bool LossBrakeCMD
+		data int ManageSignal
+
+		// Port declarations
+		export port WBSPort_t2 sendBSCUFault ( LossBrakeCMD )
+		export port WBSPort_t1 receiveManager (ManageSignal)
+
+		// Clock declarations
+
+		// Locations declaration
+		place Exec, Init, Init2
+
+		// Initial location declarations
+		initial to Init do { LossBrakeCMD = true; }
+
+		// transitions
+		on receiveManager from Init to Init2
+
+		internal from Init2 to Exec
+			provided(ManageSignal == 1)
+			do { LossBrakeCMD = false; }
+
+		internal from Init2 to Init
+			provided(ManageSignal != 1)
+
+		on sendBSCUFault from Exec to Init
+
+		// invariants
+
+		// Priorities
+	end
+
+	// Add compound type for BSCU
+	compound type BSCUModuleOne()
+
+		// Variable declarations
+
+		// Component instantiations
+		component BSCU_ModuleOne Component1()
+		component BSCU_ModuleOne_Fault Component2()
+		component ValveManager_OneState Component3()
+
+		// Connector instantiations
+		connector sendBSCUFault connect1( Component1.sendBSCUFault, Component2.sendBSCUFault)
+		connector transFaultManageSig_v2 connect2( Component3.sendManager, Component1.receiveManager, Component2.receiveManager)
+
+		export port connect1.sendSignal as sendBSCUFault
+
+		// Priority instantiations
+	end
+
+	compound type BSCU()
+
+		// Port declarations
+
+		// Variable declarations
+
+		// Component instantiations
+		component BSCUModuleOne Component1()
+		component BSCU_ModuleTwo Component2()
+
+		// Connector instantiations
+		connector getBSCUFault connect1(Component1.sendBSCUFault, Component2.receiveBSCUFault)
+		connector getPWR connect2 (Component2.receivePWR)
+		connector getGSpeed connect3 (Component2.receiveGSpeed)
+		connector getWSpeed connect4 (Component2.receiveWSpeed)
+		connector getPP connect5 (Component2.receivePP)
+		connector sendSYSVal connect6 (Component2.sendSYSVal)
+		connector sendBRKASCMD connect7 (Component2.sendBRKASCMD)
+
+		// Priority instantiations
+		export port connect2.receiveSignal as receivePWR
+		export port connect3.receiveSignal as receiveGSpeed
+		export port connect4.receiveSignal as receiveWSpeed
+		export port connect5.receiveSignal as receivePP
+		export port connect6.sendSignal as sendSYSVal
+		export port connect7.sendSignal as sendBRKASCMD
+	end
+
+	// Add compound type for Power Supply 
+	compound type PowerSupply()
+
+		// Variable declarations
+
+		// Component instantiations
+		component PowerSupply_Normal Component1()
+		component PowerSupply_Loss Component2()
+		component ValveManager_OneState Component3()
+
+		// Connector instantiations
+		connector sendPWR connect1( Component1.sendPWR, Component2.sendPWR)
+		connector transFaultManageSig_v2 connect2( Component3.sendManager, Component1.receiveManager, Component2.receiveManager)
+
+		export port connect1.sendSignal as sendPWR
+
+		// Priority instantiations
+	end
+
 	compound type HydraulicPumpCompound()
 
 		// Variable declarations
@@ -825,6 +1104,7 @@ package WBS_Fault_1
 		component MeterValveCompound Component6()
 		component BSCU Component7()
 		component MeterHydMonitor Component8()
+		component PowerSupply Component9()
 
 		// Connector instantiations
 		connector transHyd connect1( Component1.sendWSpeed, Component7.receiveWSpeed)
@@ -835,6 +1115,7 @@ package WBS_Fault_1
 		connector transHyd connect6( Component4.sendHydraulic, Component5.receiveHydraulic)
 		connector transHyd_Fault connect7( Component5.sendSOHyd, Component6.receiveSOHyd)
 		connector transHyd connect8( Component6.sendMeterHyd, Component8.receiveMeterHyd)
+		connector transCmd connect9( Component9.sendPWR, Component7.receivePWR )
 
 		// Priority instantiations
 	end

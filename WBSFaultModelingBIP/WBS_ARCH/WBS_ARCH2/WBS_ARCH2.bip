@@ -1,34 +1,33 @@
 @cpp(include="stdio.h")
-package WBS_2
+package WBS_ARCH2
 
 	extern function int min(int, int)
 	extern function int max(int, int)
-	extern function printf(string, int)
 
 	// Constant data definitions 
 
 	// Port types definitions
-	port type WBSPort_t1 ( int var )
-	port type WBSPort_t2 ( bool var )
-	port type WBSPort_t3 ( int var1, int var2 )
+	port type WBSPort_int ( int var )
+	port type WBSPort_bool ( bool var )
+	port type WBSPort_int_int ( int var1, int var2 )
 
 	// Connector types definitions
-	connector type transHyd( WBSPort_t1 p1, WBSPort_t1 p2 )
+	connector type transInt( WBSPort_int p1, WBSPort_int p2 )
 		define p1 p2
 		on p1 p2 down { p2.var = p1.var; }
 	end
 
-	connector type transHyd_v1( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+	connector type transInt_v1( WBSPort_int p1, WBSPort_int p2, WBSPort_int p3 )
 		define p1 p2 p3
 		on p1 p2 p3 down { p2.var = p1.var; p3.var = p1.var; }
 	end
 
-	connector type transHyd_v2( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+	connector type transInt_v2( WBSPort_int p1, WBSPort_int p2, WBSPort_int p3 )
 		define p1 p2 p3
 		on p1 p2 p3 down { p3.var = max(p1.var, p2.var); }
 	end
 
-	connector type transHyd_v3( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t1 p3 )
+	connector type transInt_v3( WBSPort_int p1, WBSPort_int p2, WBSPort_int p3 )
 		define p1 p2 p3
 		on p1 p2 p3 down 
 			                  {
@@ -40,12 +39,12 @@ package WBS_2
 				}
 	end
 
-	connector type transCmd( WBSPort_t2 p1, WBSPort_t2 p2 )
+	connector type transBool( WBSPort_bool p1, WBSPort_bool p2 )
 		define p1 p2
 		on p1 p2 down { p2.var = p1.var; }
 	end
 
-	connector type transCmd_TwoToTwo( WBSPort_t2 p1, WBSPort_t2 p2, WBSPort_t2 p3, WBSPort_t2 p4)
+	connector type transBool_TwoToTwo( WBSPort_bool p1, WBSPort_bool p2, WBSPort_bool p3, WBSPort_bool p4)
 		define p1 p2 p3 p4
 		on p1 p2 p3 p4 down 
 				{
@@ -59,7 +58,7 @@ package WBS_2
 				 }
 	end
 
-	connector type transHyd_TwoToOne ( WBSPort_t1 p1, WBSPort_t1 p2, WBSPort_t3 p3 )
+	connector type transInt_TwoToOne ( WBSPort_int p1, WBSPort_int p2, WBSPort_int_int p3 )
 		define p1 p2 p3
 		on p1 p2 p3 down { p3.var1 = p1.var; p3.var2 = p2.var; } 
 	end
@@ -70,7 +69,7 @@ package WBS_2
 		data int Hydraulic
 
 		// Port declarations
-		export port WBSPort_t1 sendHydraulic ( Hydraulic )
+		export port WBSPort_int sendHydraulic ( Hydraulic )
 
 		// Clock declarations
 
@@ -95,9 +94,9 @@ package WBS_2
 		data bool SystemValidity
 
 		// Port declarations
-		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
-		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
-		export port WBSPort_t1 sendSOHyd ( ShutOffHyd )
+		export port WBSPort_bool receiveSYSVal ( SystemValidity )
+		export port WBSPort_int receiveHydraulic ( Hydraulic )
+		export port WBSPort_int sendSOHyd ( ShutOffHyd )
 
 		// Clock declarations
 
@@ -139,16 +138,16 @@ package WBS_2
 		data int BlueHydraulicIn
 
 		// Port declarations
-		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
-		export port WBSPort_t1 receiveGreenHyd ( GreenHydraulicIn )
-		export port WBSPort_t1 receiveBlueHyd ( BlueHydraulicIn )
-		export port WBSPort_t1 sendGreenHyd ( GreenHydraulicOut )
-		export port WBSPort_t1 sendBlueHyd ( BlueHydraulicOut )
+		export port WBSPort_bool receiveSYSVal ( SystemValidity )
+		export port WBSPort_int receiveGreenHyd ( GreenHydraulicIn )
+		export port WBSPort_int receiveBlueHyd ( BlueHydraulicIn )
+		export port WBSPort_int sendGreenHyd ( GreenHydraulicOut )
+		export port WBSPort_int sendBlueHyd ( BlueHydraulicOut )
 
 		// Clock declarations
 
 		// Locations declaration
-		place Init, R1, R2, Exec, S1, S2, S3
+		place Init, R1, R2, Exec, S1, S2, S3, S4
 
 		// Initial location declarations
 		initial to Init do { GreenHydraulicOut = 0; BlueHydraulicOut = 0; }
@@ -168,11 +167,21 @@ package WBS_2
 			provided( (!SystemValidity || GreenHydraulicIn == 0) && BlueHydraulicIn > 0 )
 			do{ BlueHydraulicOut = BlueHydraulicIn; GreenHydraulicOut = 0; }
 
-		on sendBlueHyd from S1 to S3
+		internal from Exec to S2 
+			provided( (!SystemValidity || GreenHydraulicIn == 0) && BlueHydraulicIn > 0 )
+			do{ BlueHydraulicOut = BlueHydraulicIn; GreenHydraulicOut = 0; }
 
-		on sendBlueHyd from S2 to S3
+		internal from Exec to S3
+			provided( !(SystemValidity && GreenHydraulicIn > 0) && !((!SystemValidity || GreenHydraulicIn == 0) && BlueHydraulicIn > 0))		
+			do { GreenHydraulicOut = 0; BlueHydraulicOut = 0; }
 
-		on sendGreenHyd from S3 to Init
+		on sendBlueHyd from S1 to S4
+
+		on sendBlueHyd from S2 to S4
+
+		on sendBlueHyd from S3 to S4
+
+		on sendGreenHyd from S4 to Init
 
 		// invariants
 
@@ -187,9 +196,9 @@ package WBS_2
 		data int AntiSkidCmd
 
 		// Port declarations
-		export port WBSPort_t1 receiveASCmd ( AntiSkidCmd )
-		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
-		export port WBSPort_t1 sendASHyd ( AntiSkidHydraulic )
+		export port WBSPort_int receiveASCmd ( AntiSkidCmd )
+		export port WBSPort_int receiveHydraulic ( Hydraulic )
+		export port WBSPort_int sendASHyd ( AntiSkidHydraulic )
 
 		// Clock declarations
 
@@ -220,7 +229,7 @@ package WBS_2
 		data int PedalPosition
 
 		// Port declarations
-		export port WBSPort_t1 sendPP ( PedalPosition )
+		export port WBSPort_int sendPP ( PedalPosition )
 
 		// Clock declarations
 
@@ -247,8 +256,8 @@ package WBS_2
 		data int BlueMeterHydraulic
 
 		// Port declarations
-		export port WBSPort_t3 receiveMeterHyd ( GreenMeterHydraulic, BlueMeterHydraulic )
-		export port WBSPort_t1 sendWheelPressure ( WheelPressure )
+		export port WBSPort_int_int receiveMeterHyd ( GreenMeterHydraulic, BlueMeterHydraulic )
+		export port WBSPort_int sendWheelPressure ( WheelPressure )
 
 		// Clock declarations
 
@@ -279,9 +288,9 @@ package WBS_2
 		data bool MechanicalCMD
 
 		// Port declarations
-		export port WBSPort_t2 receiveBRKASCMD ( BrakeAntiSkidCMD )
-		export port WBSPort_t1 receiveHyd ( Hydraulic )
-		export port WBSPort_t1 sendMeterHyd ( MeterHyd )
+		export port WBSPort_bool receiveBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_int receiveHyd ( Hydraulic )
+		export port WBSPort_int sendMeterHyd ( MeterHyd )
 
 		// Clock declarations
 
@@ -324,12 +333,12 @@ package WBS_2
 		data int AntiSkidCmd
 
 		// Port declarations
-		export port WBSPort_t1 receiveGSpeed ( GroundSpeed )
-		export port WBSPort_t1 receiveWSpeed ( WheelSpeed )
-		export port WBSPort_t1 receivePP ( PedalPosition )
-		export port WBSPort_t2 sendSYSVal ( SystemValidity )
-		export port WBSPort_t2 sendBRKASCMD ( BrakeAntiSkidCMD )
-		export port WBSPort_t1 sendAntiSkidCmd ( AntiSkidCmd )
+		export port WBSPort_int receiveGSpeed ( GroundSpeed )
+		export port WBSPort_int receiveWSpeed ( WheelSpeed )
+		export port WBSPort_int receivePP ( PedalPosition )
+		export port WBSPort_bool sendSYSVal ( SystemValidity )
+		export port WBSPort_bool sendBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_int sendAntiSkidCmd ( AntiSkidCmd )
  
 		// Clock declarations
 
@@ -382,7 +391,7 @@ package WBS_2
 		data int WheelSpeed
 
 		// Port declarations
-		export port WBSPort_t1 sendWSpeed ( WheelSpeed )
+		export port WBSPort_int sendWSpeed ( WheelSpeed )
 
 		// Clock declarations
 
@@ -406,7 +415,7 @@ package WBS_2
 		data bool Mechanical
 
 		// Port declarations
-		export port WBSPort_t1 sendPP ( PedalPosition )
+		export port WBSPort_int sendPP ( PedalPosition )
 
 		// Clock declarations
 
@@ -429,7 +438,7 @@ package WBS_2
 		data int GroundSpeed
 
 		// Port declarations
-		export port WBSPort_t1 sendGSpeed ( GroundSpeed )
+		export port WBSPort_int sendGSpeed ( GroundSpeed )
 
 		// Clock declarations
 
@@ -452,7 +461,7 @@ package WBS_2
 		data int WheelPressure
 
 		// Port declarations
-		export port WBSPort_t1 receiveWheelPressure ( WheelPressure )
+		export port WBSPort_int receiveWheelPressure ( WheelPressure )
 
 		// Clock declarations
 
@@ -464,7 +473,6 @@ package WBS_2
 
 		// transitions
 		on receiveWheelPressure from s0 to s0
-				do { printf("The output wheel pressure is %d\n", WheelPressure); }
 
 		// invariants
 
@@ -477,12 +485,11 @@ package WBS_2
 		// Variable declarations
 
 		// Component instantiations
-		component WheelSpeedProvider Component1()
-		component PedalPositionProvider Component2()
-		component GroundSpeedProvider Component3()
+		component WheelSpeedProvider WheelSpeedProvider()
+		component PedalPositionProvider PedalPositionProvider()
+		component GroundSpeedProvider GroundSpeedProvider()
 		component ShutoffValve ShutoffValve()
-		component BSCU BSCU1()
-		component WheelPressureMonitor Component8()
+		component WheelPressureMonitor WheelPressureMonitor()
 		component HydraulicPump BlueHydraulicPump()
 		component HydraulicPump Accumulator()
 		component HydraulicPump GreenHydraulicPump()
@@ -492,23 +499,24 @@ package WBS_2
 		component AntiSkidValve AntiSkidValve()
 		component Wheel Wheel()
 		// new feature of two BSCU
+		component BSCU BSCU1()
 		component BSCU BSCU2()
 
 		// Connector instantiations
-		connector transHyd_v1 connect1( Component1.sendWSpeed, BSCU1.receiveWSpeed, BSCU2.receiveWSpeed)
-		connector transHyd_v1 connect2( Component2.sendPP, BSCU1.receivePP, BSCU2.receivePP)
-		connector transHyd_v1 connect3( Component3.sendGSpeed, BSCU1.receiveGSpeed, BSCU2.receiveGSpeed)
-		connector transCmd_TwoToTwo connect4( BSCU1.sendSYSVal, BSCU2.sendSYSVal, ShutoffValve.receiveSYSVal, SelectorValve.receiveSYSVal)
-		connector transCmd_TwoToTwo connect5( BSCU1.sendBRKASCMD, BSCU2.sendBRKASCMD, GreenMeterValve.receiveBRKASCMD, BlueMeterValve.receiveBRKASCMD)
-		connector transHyd connect6( GreenHydraulicPump.sendHydraulic, ShutoffValve.receiveHydraulic)
-		connector transHyd connect7( ShutoffValve.sendSOHyd, SelectorValve.receiveGreenHyd)
-		connector transHyd connect8( Wheel.sendWheelPressure, Component8.receiveWheelPressure)
-		connector transHyd_v3 connect9( BSCU1.sendAntiSkidCmd, BSCU2.sendAntiSkidCmd, AntiSkidValve.receiveASCmd)
-		connector transHyd_v2 connect10( BlueHydraulicPump.sendHydraulic, Accumulator.sendHydraulic, SelectorValve.receiveBlueHyd)
-		connector transHyd connect11( SelectorValve.sendGreenHyd, GreenMeterValve.receiveHyd)
-		connector transHyd connect12( SelectorValve.sendBlueHyd, AntiSkidValve.receiveHydraulic)
-		connector transHyd connect13( AntiSkidValve.sendASHyd, BlueMeterValve.receiveHyd)
-		connector transHyd_TwoToOne connect14( GreenMeterValve.sendMeterHyd, BlueMeterValve.sendMeterHyd, Wheel.receiveMeterHyd)
+		connector transInt_v1 WheelSpeed_Provider_To_BSCU1_BSCU2( WheelSpeedProvider.sendWSpeed, BSCU1.receiveWSpeed, BSCU2.receiveWSpeed)
+		connector transInt_v1 PedalPosition_Provider_To_BSCU1_BSCU2( PedalPositionProvider.sendPP, BSCU1.receivePP, BSCU2.receivePP)
+		connector transInt_v1 GroundSpeed_Provider_To_BSCU1_BSCU2( GroundSpeedProvider.sendGSpeed, BSCU1.receiveGSpeed, BSCU2.receiveGSpeed)
+		connector transBool_TwoToTwo SystemValidity_BSCU1_BSCU2_To_Shutoff_Selector( BSCU1.sendSYSVal, BSCU2.sendSYSVal, ShutoffValve.receiveSYSVal, SelectorValve.receiveSYSVal)
+		connector transBool_TwoToTwo BrakeAntiSkidCommand_BSCU1_BSCU2_To_GreenMeter_BlueMeter( BSCU1.sendBRKASCMD, BSCU2.sendBRKASCMD, GreenMeterValve.receiveBRKASCMD, BlueMeterValve.receiveBRKASCMD)
+		connector transInt Hydraulic_GreenPump_To_Shutoff( GreenHydraulicPump.sendHydraulic, ShutoffValve.receiveHydraulic)
+		connector transInt Hydraulic_Shutoff_To_Selector( ShutoffValve.sendSOHyd, SelectorValve.receiveGreenHyd)
+		connector transInt Pressure_Wheel_To_Monitor( Wheel.sendWheelPressure, WheelPressureMonitor.receiveWheelPressure)
+		connector transInt_v3 AntiSkidCommand_BSCU1_BSCU2_To_AntiSkid( BSCU1.sendAntiSkidCmd, BSCU2.sendAntiSkidCmd, AntiSkidValve.receiveASCmd)
+		connector transInt_v2 Hydraulic_BluePump_Accumulator_To_Selector( BlueHydraulicPump.sendHydraulic, Accumulator.sendHydraulic, SelectorValve.receiveBlueHyd)
+		connector transInt Hydraulic_Selector_To_GreenMeter( SelectorValve.sendGreenHyd, GreenMeterValve.receiveHyd)
+		connector transInt Hydraulic_Selector_To_AntiSkid( SelectorValve.sendBlueHyd, AntiSkidValve.receiveHydraulic)
+		connector transInt Hydraulic_AntiSkid_To_BlueMeter( AntiSkidValve.sendASHyd, BlueMeterValve.receiveHyd)
+		connector transInt_TwoToOne Hydraulic_GreenMeter_BlueMeter_To_Wheel( GreenMeterValve.sendMeterHyd, BlueMeterValve.sendMeterHyd, Wheel.receiveMeterHyd)
 
 		// Priority instantiations
 	end

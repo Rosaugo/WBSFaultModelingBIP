@@ -1,19 +1,19 @@
 @cpp(include="stdio.h")
-package WBS_1
+package WBS_ARCH0
 
 	// Constant data definitions 
 
 	// Port types definitions
-	port type WBSPort_t1 ( int var )
-	port type WBSPort_t2 ( bool var )
+	port type WBSPort_int ( int var )
+	port type WBSPort_bool ( bool var )
 
 	// Connector types definitions
-	connector type transHyd( WBSPort_t1 p1, WBSPort_t1 p2 )
+	connector type transInt( WBSPort_int p1, WBSPort_int p2 )
 		define p1 p2
 		on p1 p2 down { p2.var = p1.var; }
 	end
 
-	connector type transCmd( WBSPort_t2 p1, WBSPort_t2 p2 )
+	connector type transBool( WBSPort_bool p1, WBSPort_bool p2 )
 		define p1 p2
 		on p1 p2 down { p2.var = p1.var; }
 	end
@@ -24,7 +24,7 @@ package WBS_1
 		data int Hydraulic
 
 		// Port declarations
-		export port WBSPort_t1 sendHydraulic ( Hydraulic )
+		export port WBSPort_int sendHydraulic ( Hydraulic )
 
 		// Clock declarations
 
@@ -32,7 +32,7 @@ package WBS_1
 		place Exec
 
 		// Initial location declarations
-		initial to Exec do { Hydraulic = 10; }
+		initial to Exec do {Hydraulic = 10;}
 
 		// transitions
 		on sendHydraulic from Exec to Exec
@@ -49,9 +49,9 @@ package WBS_1
 		data bool SystemValidity
 
 		// Port declarations
-		export port WBSPort_t2 receiveSYSVal ( SystemValidity )
-		export port WBSPort_t1 receiveHydraulic ( Hydraulic )
-		export port WBSPort_t1 sendSOHyd ( ShutOffHyd )
+		export port WBSPort_bool receiveSYSVal ( SystemValidity )
+		export port WBSPort_int receiveHydraulic ( Hydraulic )
+		export port WBSPort_int sendSOHyd ( ShutOffHyd )
 
 		// Clock declarations
 
@@ -91,9 +91,9 @@ package WBS_1
 		data bool MechanicalCMD
 
 		// Port declarations
-		export port WBSPort_t2 receiveBRKASCMD ( BrakeAntiSkidCMD )
-		export port WBSPort_t1 receiveSOHyd ( ShutOffHyd )
-		export port WBSPort_t1 sendMeterHyd ( MeterHyd )
+		export port WBSPort_bool receiveBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_int receiveSOHyd ( ShutOffHyd )
+		export port WBSPort_int sendMeterHyd ( MeterHyd )
 
 		// Clock declarations
 
@@ -135,11 +135,11 @@ package WBS_1
 		data bool Power
 
 		// Port declarations
-		export port WBSPort_t1 receiveGSpeed ( GroundSpeed )
-		export port WBSPort_t1 receiveWSpeed ( WheelSpeed )
-		export port WBSPort_t1 receivePP ( PedalPosition )
-		export port WBSPort_t2 sendSYSVal ( SystemValidity )
-		export port WBSPort_t2 sendBRKASCMD ( BrakeAntiSkidCMD )
+		export port WBSPort_int receiveGSpeed ( GroundSpeed )
+		export port WBSPort_int receiveWSpeed ( WheelSpeed )
+		export port WBSPort_int receivePP ( PedalPosition )
+		export port WBSPort_bool sendSYSVal ( SystemValidity )
+		export port WBSPort_bool sendBRKASCMD ( BrakeAntiSkidCMD )
 
 		// Clock declarations
 
@@ -185,12 +185,13 @@ package WBS_1
 		// Priorities
 	end
 
+	// Avionics Systems
 	atom type WheelSpeedProvider()
 		// Variable declarations
 		data int WheelSpeed
 
 		// Port declarations
-		export port WBSPort_t1 sendWSpeed ( WheelSpeed )
+		export port WBSPort_int sendWSpeed ( WheelSpeed )
 
 		// Clock declarations
 
@@ -213,7 +214,7 @@ package WBS_1
 		data int PedalPosition
 
 		// Port declarations
-		export port WBSPort_t1 sendPP ( PedalPosition )
+		export port WBSPort_int sendPP ( PedalPosition )
 
 		// Clock declarations
 
@@ -236,7 +237,7 @@ package WBS_1
 		data int GroundSpeed
 
 		// Port declarations
-		export port WBSPort_t1 sendGSpeed ( GroundSpeed )
+		export port WBSPort_int sendGSpeed ( GroundSpeed )
 
 		// Clock declarations
 
@@ -259,7 +260,7 @@ package WBS_1
 		data int MeterHyd
 
 		// Port declarations
-		export port WBSPort_t1 receiveMeterHyd ( MeterHyd )
+		export port WBSPort_int receiveMeterHyd ( MeterHyd )
 
 		// Clock declarations
 
@@ -267,7 +268,7 @@ package WBS_1
 		place s0
 
 		// Initial location declarations
-		initial to s0
+		initial to s0 do { MeterHyd = 0; }
 
 		// transitions
 		on receiveMeterHyd from s0 to s0
@@ -283,24 +284,24 @@ package WBS_1
 		// Variable declarations
 
 		// Component instantiations
-		component WheelSpeedProvider Component1()
-		component PedalPositionProvider Component2()
-		component GroundSpeedProvider Component3()
-		component HydraulicPump Component4()
-		component ShutoffValve Component5()
-		component MeterValve Component6()
-		component BSCU Component7()
-		component MeterHydMonitor Component8()
+		component WheelSpeedProvider WheelSpeedProvider()
+		component PedalPositionProvider PedalPositionProvider()
+		component GroundSpeedProvider GroundSpeedProvider()
+		component HydraulicPump HydraulicPump()
+		component ShutoffValve ShutoffValve()
+		component MeterValve MeterValve()
+		component BSCU BSCU()
+		component MeterHydMonitor MeterHydMonitor()
 
 		// Connector instantiations
-		connector transHyd connect1( Component1.sendWSpeed, Component7.receiveWSpeed)
-		connector transHyd connect2( Component2.sendPP, Component7.receivePP)
-		connector transHyd connect3( Component3.sendGSpeed, Component7.receiveGSpeed)
-		connector transCmd connect4( Component7.sendSYSVal, Component5.receiveSYSVal)
-		connector transCmd connect5( Component7.sendBRKASCMD, Component6.receiveBRKASCMD)
-		connector transHyd connect6( Component4.sendHydraulic, Component5.receiveHydraulic)
-		connector transHyd connect7( Component5.sendSOHyd, Component6.receiveSOHyd)
-		connector transHyd connect8( Component6.sendMeterHyd, Component8.receiveMeterHyd)
+		connector transInt WheelSpeed_Provider_To_BSCU( WheelSpeedProvider.sendWSpeed, BSCU.receiveWSpeed)
+		connector transInt PedalPosition_Provider_To_BSCU( PedalPositionProvider.sendPP, BSCU.receivePP)
+		connector transInt GroundSpeed_Provider_To_BSCU( GroundSpeedProvider.sendGSpeed, BSCU.receiveGSpeed)
+		connector transBool SystemValidity_BSCU_To_ShutoffVavle( BSCU.sendSYSVal, ShutoffValve.receiveSYSVal)
+		connector transBool BrakeAntiSkidCommand_BSCU_To_MeterVavle( BSCU.sendBRKASCMD, MeterValve.receiveBRKASCMD)
+		connector transInt Hydraulic_Pump_To_ShutoffValve( HydraulicPump.sendHydraulic, ShutoffValve.receiveHydraulic)
+		connector transInt Hydraulic_ShutoffValve_To_MeterValve( ShutoffValve.sendSOHyd, MeterValve.receiveSOHyd)
+		connector transInt Hydraulic_MeterValve_To_Monitor( MeterValve.sendMeterHyd, MeterHydMonitor.receiveMeterHyd)
 
 		// Priority instantiations
 	end

@@ -1,0 +1,13 @@
+WBS_ARCH
+v0 单轮正常工作模式（绿色液压管路供压）下的无故障模型
+v1单轮正常/备用工作模式（绿色/蓝色液压管路供压）下的无故障模型
+v2 单轮冗余BSCU双工作模式（绿色/蓝色液压管路供压）下的无故障模型
+v3 单轮双通道BSCU双工作模式（绿色/蓝色液压管路供压）下的无故障模型(与v4相比蓄能器位置及selector valve输入有变)
+v4 单轮双通道BSCU双工作模式（绿色/蓝色液压管路供压）下的无故障模型
+
+WBS_Fault_ARCH0
+在原有的模型基础上包含了HydraulicPump，Shutoff Valve和 Meter Valve三个模块的故障模型
+
+WBS_Fault_ARCH1
+在原有的模型基础上包含了Power Supply, BSCU, HydraulicPump，Shutoff Valve和 Meter Valve五个模块的故障模型
+完成对单轮正常工作模式（绿色液压管路供压）下的故障模型建模，对应WBS_ARCH_v1
