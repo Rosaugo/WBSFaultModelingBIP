@@ -64,6 +64,7 @@ We deduce the faulty behaviors for every component from the fault tree shown in 
 \begin{table}[htbp]
 	\caption{Deduced faulty behavior statistics under ARCH4}
 	\begin{center}
+	\linespread{1.3}\selectfont
 		\begin{tabular}{|c|c|@{}p{0.002\linewidth}<{\centering}@{}|c|}
 			\hline
 			\multicolumn{2}{|c|}{}&&{Number of fault(s)}\\
@@ -96,7 +97,9 @@ We deduce the faulty behaviors for every component from the fault tree shown in 
 \subsection{Extended WBS Model with faults}
 In this section, we give a whole view of modified BIP model which is integrated with fault tree introduced in section \emph{B} using the methodology provided in seciton \emph{A}.
 
-Table 2 shows metrics for the different architectures. The later the design version of the architecture, the greater the scale of the BIP model. ARCH1 shows a large delta with other three architectures. From ARCH2 to ARCH3, there is a differ from the design of the BSCU. For ARCH2, the AIR6110 standard only requires a redundency of BSCU which results in a WBS model including two identical BSCU system. For ARCH3, motivated by trade studies on ARCH2, the strcture is modified from two BSCUs to a BSCU with dual channels. Also, as the result of integration, the extended BIP model with fault behavior presents a larger scale than the nominal BIP model. ARCH3 and ARCH4 show the closest metrics for there is only a little change in the physical system.
+Table 2 shows metrics for the different architectures. We focus on observing the diversities between the adjacent architectures and the differences between the nominal system architecture and extended system architecture. The count of max depth of each architecture provides an overview of the usage of hierarchies of complex components. The count of internal ports indicating the number of inner transitions with guard in every component while the count of external ports indicating the number of outer interface of each component.
+
+We can conclude that the later the design version of the architecture, the greater the scale of the BIP model. ARCH1 shows a large delta comparing with other three architectures. From ARCH2 to ARCH3, there is a differ from the design for the BSCU. For ARCH2, the AIR6110 standard only requires a redundency of BSCU which results in a WBS model including two identical BSCU system. For ARCH3, motivated by trade studies on ARCH2, the strcture is modified from two BSCUs to a BSCU with dual channels. Also, as the result of integration, the extended BIP model with fault behavior presents a larger scale than the nominal BIP model. ARCH3 and ARCH4 show the closest metrics for there is only a little change in the physical system.
 
 The graphical representation of the BIP model can seperate the correct behavior from the faulty behavior to a great extent. This helps us tracing how a single point of failure impacts the system and whether it will cause a top level failure or not.
 
@@ -105,33 +108,34 @@ The full system implementation can be found at \href{https://github.com/Rosaugo/
 \begin{table}[htbp]
 	\caption{BIP Nominal/Fault Model statistics}
 	\begin{center}
+	\linespread{1.3}\selectfont
 \begin{tabular}{|c|c|@{}p{0.002\linewidth}<{\centering}@{}|c|c|c|c|}
 	\hline
 	\multicolumn{2}{|c|}{}&&{ARCH1}&{ARCH2}&{ARCH3}&{ARCH4}\\
 	\hline
-	\multirow{2}*{\tabincell{c}{Component\\types}}&{Nominal}&&&&&\\
+	\multirow{2}*{\tabincell{c}{Component\\types}}&{Nominal}&&{12}&{12}&{15}&{15}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{24}&{24}&{25}&{25}\\
 	\hline
-	\multirow{2}*{\tabincell{c}{Compound\\types}}&{Nominal}&&&&&\\
+	\multirow{2}*{\tabincell{c}{Compound\\types}}&{Nominal}&&{1}&{1}&{2}&{2}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{8}&{8}&{7}&{7}\\
 	\hline
-	\multirow{2}*{Max depth}&{Nominal}&&&&&\\
+	\multirow{2}*{Max depth}&{Nominal}&&{2}&{2}&{3}&{3}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{4}&{4}&{4}&{4}\\
 	\hline
-	\multirow{2}*{Variables}&{Nominal}&&&&&\\
+	\multirow{2}*{Variables}&{Nominal}&&{38}&{45}&{90}&{91}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{102}&{115}&{134}&{135}\\
 	\hline
-	\multirow{2}*{\tabincell{c}{Internal\\ports}}&{Nominal}&&&&&\\
+	\multirow{2}*{\tabincell{c}{Internal\\ports}}&{Nominal}&&{18}&{22}&{30}&{30}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{104}&{114}&{128}&{128}\\
 	\hline
-	\multirow{2}*{\tabincell{c}{External\\ports}}&{Nominal}&&&&&\\
+	\multirow{2}*{\tabincell{c}{External\\ports}}&{Nominal}&&{33}&{39}&{64}&{65}\\
 	\cline{2-7}
-	&{Extended}&&&&&\\
+	&{Extended}&&{96}&{109}&{126}&{127}\\
 	\hline
 \end{tabular}
 		\label{tab1}
