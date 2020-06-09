@@ -2,17 +2,21 @@
 
 \section{Preliminaries}
 
-\subsection{The BIP Framework}
+%\subsection{The BIP Framework}
 
+In this section, we briefly introduce the modelling framework of BIP and the statistical model checking for BIP.
 
-In this section, we present the BIP \cite{bip11} \cite{concur16} \cite{atva15} model with multiparty synchronization and data transfer.
- A BIP model is a parallel composition of a set of components.
- A BIP component is formally defined as an automaton extended with linear integer arithmetic as follows.
+The BIP framework \cite{bip11,atva15,concur16} advocates a component-based design methodology for building systems from atomic components. 
+ In this work, we relay on the fragment of BIP with multiparty synchronization and data transfer.
+% We do not take into account in this work, as in the previous work~\cite{dfinder10,tgc15}, since adding priority will not introduce any errors.
+% If a model without priority is safe, then after adding priority constraints it remains safe.
+ Formally, an atomic BIP component is defined by an automaton extended with data and port.
 
 \begin{definition} [BIP component]
 	\label{component-def}
-	Given a finite set of variables $\bipvar{}$, a BIP component is defined as a tuple
-	$\comp{} = \mktuple{\bipvar{}, \locs{}, \ports{}, \edges{}, \ell}$, where
+	Given a finite set of variables $\bipvar{}$, 
+    an atomic BIP component is defined as a tuple $\comp{} = \mktuple{\bipvar{}, \locs{}, \ports{}, \edges{}, \ell}$, 
+    where
 	\begin{inparaenum}
 		\item $\locs{}$ is a finite set of control locations;
 		\item $\ports{}$ is a finite set of communication ports;
@@ -24,15 +28,10 @@ In this section, we present the BIP \cite{bip11} \cite{concur16} \cite{atva15} m
 \end{definition}
 
 Transition edges in a component are labeled by ports, which form the interface of the component.
-We assume that, from each control location,
-every pair of outgoing transitions have different ports,
-and the ports of different components are disjoint.
+We assume that, from each control location, every pair of outgoing transitions have different ports, and the ports of different components are disjoint.
 In other words, transitions with the same ports in the component are not enabled simultaneously.
-Given a component violating such assumptions,
-one can easily transform it into the required form by renaming the ports,
-while retaining the BIP expressiveness power.
-To ease the presentation, we denote in the sequel the id of the unique component
-where port $p$ is defined by $\portid{p}$.
+ Given a component violating such assumptions, one can easily transform it into the required form by renaming the ports, while retaining the BIP expressiveness power.
+ To ease the presentation, we denote in the sequel by $\portid{p}$ the unique component where port $p$ is defined.
 
 %Given a tuple of component types $\overline{\comptype{}} = \mktuple{\comptype{1},\ldots, \comptype{k}}$,
 %and a tuple of natural numbers $\overline{n} = \mktuple{n_{1}, \ldots, n_{k}}$,
@@ -46,7 +45,7 @@ We denote by $\components = \{\comp{i} ~|~ i\in [1,n]\}$ a set of components.
 %is the $j^{th}$ instantiation of component type $\comptype{i}$.
 %
 %Given a set of comoponents $\components$,
-In \BIP, coordinations of components are specified by using interactions.
+The coordination of components is specified by using interactions.
 %and in \BIP an interaction is represented as a finite set of ports.
 
 \begin{definition} [Interaction]
@@ -61,8 +60,8 @@ Intuitively, an interaction defines a guarded multiparty synchronization with da
 when the guard $g$ of an interaction $\mathcal{P}$ is enabled,
 then the data transfer specified by $f$ can be executed, and
 after that the transitions labelled by the ports in $\gamma$ can be taken simultaneously.
-%
 We denote by $\Gamma$ a finite set of interactions.
+
 A \BIP model is constructed by composing a number of components with interactions.
 
 \begin{definition} [\BIP Model]
@@ -71,14 +70,9 @@ A \BIP model is constructed by composing a number of components with interaction
 	and $\Gamma$ is a finite set of interactions for $\components$.
 \end{definition}
 
-We do not take priority into account in this paper, as in the previous work~\cite{dfinder10,tgc15},
-since adding priority will not introduce any errors.
-If a model without priority is safe, then after adding priority constraints it remains safe.
-We use a simple mutual exclusion protocol to illustrate \BIP.
 
-%\input{ticket-bip}
 
-A state of a \BIP model is a tuple $c = \langle \compstate{1}, \ldots, \compstate{n} \rangle $,
+A state of a \BIP model is denoted by a tuple $c = \langle \compstate{1}, \ldots, \compstate{n} \rangle $,
 where for all $i \in [1,n] $, $l_i \in \locs{i} $ and $\mathbf{V}_i $ is a valuation of $\bipvar{i}$.
 %
 %We denote by $c(i,j), i\in[1,k]$ the state $\mktuple{l_{i}^{j}, s_{i}^{j}}$ of component $\comptype{i}[j]$.
@@ -95,12 +89,11 @@ such that $\gamma \cap \ports{i} \neq \emptyset$,
 there is an edge $\mktuple{l_i, \gamma \cap \ports{i}, g_i, f_i, l_{i}' } \in \edges{i}$
 and  $\mathbf{V}_{i} \models g_i $.
 %
-The labeled transition system semantics of a \BIP model is defined as follows.
+Then we define the semantics of a \BIP model by a labeled transition system.
 
-\begin{definition} [\BIP operational semantics]
+\begin{definition} [Labeled transition system of \BIP]
 	\label{operational-semantics}
-	Given a \BIP model $\bipmodel=\mktuple{\components,\Gamma}$,
-	its operational semantics is defined by a labeled transition system
+	Given a \BIP model $\bipmodel=\mktuple{\components,\Gamma}$, the labeled transition system it defines is a tuple
 	$\TS{\BIP} = \mktuple{\mathcal{C}, \Sigma, \mathcal{R}, \mathcal{C}_{0}}$, where
 	%
 	\begin{enumerate}
@@ -142,8 +135,21 @@ The labeled transition system semantics of a \BIP model is defined as follows.
 %from an initial configuration $c_{0}$ to $ c$.
 %
 
-\subsection{Statistical Model Checking}
+%\subsection{Statistical Model Checking for BIP}
 
-\textcolor{red}{
-Giving an introduction of Statistical Model Checking here.
-}
+In the stochastic extension of BIP, we can add stochastic behavior to atomic components by declaring probabilistic variables.
+ A probabilistic variable $x^{P}$ is attached to given distributions $\mu_{x}^{P}$ and can be updated on transitions using the attached distribution.
+ The semantics is thus fully stochastic.
+ We refer to \cite{sbip18} for details.
+ 
+Given a stochastic system model $\bipmodel$ and a property specification $\phi$, 
+ statistical model checking refers to a series of simulation-based techniques 
+ that can be used to answer two questions: 
+ (1) Qualitative: Is the probability for $\bipmodel$ to satisfy $\phi$ greater or equal to a certain threshold $\theta$ ? and 
+ (2) Quantitative: What is the probability for $\bipmodel$ to satisfy $\phi$?
+ Let $B_i$ be a discrete random variable with a Bernoulli distribution of parameter $p$. 
+ Such a variable can only take 2 values 0 and 1 with $Pr[B_i = 1] = p$ and $Pr[B_i = 0] = 1-p$.
+ In our context, each variable $B_i$ is associated with one simulation of the system. 
+ The outcome for $B_i$,  denoted $b_i$, is 1 if the $i$-th simulation satisfies $\phi$ and 0 otherwise.
+ The approaches and algorithms to solve the above questions are out of the scope of this paper.
+ We refer to \cite{smc-past} for more information.
