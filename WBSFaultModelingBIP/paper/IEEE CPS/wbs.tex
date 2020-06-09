@@ -2,7 +2,7 @@
 
 \section{The AIR6110 Wheel Brake System}
 
-The Wheel Brake System(WBS) description is introduced in Aerospace Information Report 6110(AIR6110) as a contiguous aircraft system development process example. According to AIR6110 standard, WBS is a detailed function of an aircraft designated model S18. The hypothetical S18 aircraft is a two engine passenger aircraft designed to carry 300 to 350 passengers up to 5000 nautical miles at 0.84 mach, and has an average flight duration of 5 hours.
+The Wheel Brake System(WBS) description is introduced in Aerospace Information Report 6110 (AIR6110) as a contiguous aircraft system development process example. According to AIR6110 standard, WBS is a detailed function of an aircraft designated model S18. The hypothetical S18 aircraft is a two engine passenger aircraft designed to carry 300 to 350 passengers up to 5000 nautical miles at 0.84 mach, and has an average flight duration of 5 hours.
 
 The WBS provides braking on the main gear wheels used to provide safe retardation of the aircraft during taxiing and landing phases, and in the event of a rejected take-off. The wheel brakes also prevent unintended aircraft motion when parked, and may be used to provide differential braking for aircraft directional control. A secondary function of the WBS is to stop main gear wheel rotation upon gear retraction. Braking on the ground is commanded manually, via brake pedals, or automatically (autobrake) without the need for pedal application.
 
@@ -45,9 +45,9 @@ We follow the standard to advance our BIP model. As a result, our WBS BIP model 
 \item The modified architecture shall have dual channel BSCU and multimode brake operations to provide the required redundancy.
 \end{itemize}
 
-\emph{ARCH3.} Following the result of the WBS trade study, The development of architecture three is designed with one BSCU housing two independent systems, each BSCU subsystem has independent command and monitor channels. 
+\emph{ARCH3.} Following the result of the WBS trade study, The development of architecture three is designed with one BSCU housing two independent systems, each BSCU subsystem has independent command and monitor channels.
 
 %Figure ? shows the iteration from ARCH2 to ARCH3
 
 \emph{ARCH4.} Since architecture three has been simulated and the results of the modeling for each system component are that the schematic of the braking system architecture does not work and there are some mistakes in the schematic. Architecture four is established to avoid the risk of hydraulic supply to wheel brake being possible in normal mode by accumulator. An input is added in ARCH4 to the selector valve corresponding to the validity of the control system. Pedal position signal is input in front of the anti-skid valve in blue hydraulic pressure line and the accumulator is moved to the front of the selector valve.
- 
+

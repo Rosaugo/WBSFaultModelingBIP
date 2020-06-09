@@ -1,14 +1,16 @@
 
 \section{Introduction}
+
 Model based design is becoming an increasingly important approach for the development of safety critical systems.
 The functional behavior and the architecture of the system can be modelled in some formal language using graphical or textual representations.
-This formal model is called the nominal system model can be subjected to various analysis such as simulation, verification and testing.
+This formal model is called the nominal system model and it can be subjected to various analysis such as simulation, verification and testing.
 Code generation is also supported to derive implementations directly from high level models.
 In model based safety analysis, the nominal system model is then augmented with fault models for the digital and mechanical systems to create an extended system model.
 This model can be used to describe the behavior of the system in the presence of one or more faults.
 
+
 For the extended model with faulty behaviors, we suggest \emph{stochastic abstraction}\cite{stoabs} technique to import probability distributions into some of the components having stochastic process transiting between nominal behavior and faulty behavior.
-To compute the probability for the system to satisfy the specification, the Statistical Model Checking\cite{vmcai04}\cite{cav04}\cite{cmu04} approach is an efficiently choice. The SMC approach simulates the system and use the statistic results to verify the given properties. 
+To compute the probability for the system to satisfy the specification, the Statistical Model Checking\cite{vmcai04}\cite{cav04}\cite{cmu04} approach is an efficiently choice. The SMC approach simulates the system and use the statistic results to verify the given properties.
 This is an alternative way to avoid the state explosion problem, especially for complex real-world systems.
 
 On the other hand, there is a continuously strong demand for minimizing errors during the development of safety-critical complex systems\cite{lctes10}, especially for aerospace systems\cite{issrew12}.
@@ -16,6 +18,10 @@ The Society of Automotive Engineers provides Aerospace Recommended Practice ARP4
 
 In this paper, we propose to apply the stochastic abstraction approach on Wheel Brake System(WBS) extracted from the SAE AIR6110 standard. The WBS is designed into several BIP models with four architecures. BIP is a framework, language and tool for specifying components and component interactions. BIP performs well in generating executions of hierarchical components based systems. BIP also provides a type definition for each component and graphical representation for BIP model to decrease the complexity of system design.
 
-We use SBIP\cite{atva18}, a statistical model checker for BIP models, to verify safety and other requirements introduced in AIR6110 standard. We report interesting findings when taking the experiment results of serveral WBS architectures into comparison. As another promotion of experiments, we confirm the necessity of the iteration in AIR6110. We also observe the performance of SBIP during probability estimation and give some suggestions for using BIP and SBIP tool chains.
+We use SBIP\cite{sbip18}, a statistical model checker for BIP models, to verify safety and other requirements introduced in AIR6110 standard. We report interesting findings when taking the experiment results of serveral WBS architectures into comparison. As another promotion of experiments, we confirm the necessity of the iteration in AIR6110. We also observe the performance of SBIP during probability estimation and give some suggestions for using BIP and SBIP tool chains.
 
-\textbf{\emph{Structure of this paper.}} Section 2 introduces the BIP framework and statistical model checking. Section 3 gives overview of the SAE AIR6110 Wheel Brake System. In section 4, we introduce the integration process of nominal system model and faulty behavior. Section 5 provides verification methods and experiment results of the WBS. Finally, section 6 concludes this paper and discuss future works.
+ The remainder of the paper is organized as follows. Section 2 introduces the BIP framework and statistical model checking for BIP. 
+ Section 3 presents an overview of the SAE AIR6110 Wheel Brake System. 
+ In section 4, we present the integration process of nominal system model and faulty behavior. 
+ Section 5 provides the verification methods and experimental results. 
+ Section 6 concludes this paper and discuss some future works.
