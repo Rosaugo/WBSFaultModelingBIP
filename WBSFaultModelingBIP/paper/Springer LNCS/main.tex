@@ -30,6 +30,8 @@
 \usepackage{stfloats}
 \usepackage{array}
 \usepackage[misc]{ifsym}
+\usepackage{subfigure}
+\usepackage{verbatim}
 
 \input{macros}
 
@@ -50,7 +52,7 @@
 
 \begin{document}
 %
-\title{Behavioral fault modeling and analysis with BIP:\\
+\title{Behavioral fault modelling and analysis with BIP:\\
 	A Wheel Brake System Case Study\\}
 %
 %\titlerunning{Abbreviated paper title}
@@ -74,8 +76,8 @@ Shanghai Key Laboratory of Computer Software Testing and Evaluating\\ East China
 %
 \begin{abstract}
 BIP (Behavior-Interaction-Priority) is a component-based framework supporting rigorous design of complex systems.
-Systems are modeled by a set of components and connectors.
-Behavioral fault modeling and analysis refers to an integration of model based system design and safety analysis.
+Systems are modelled by a set of components and connectors.
+Behavioral fault modelling and analysis refers to an integration of model based system design and safety analysis.
 In this paper, we integrate fault tree based safety analysis into BIP model and
 apply statistical model checking to verify system specification and calculate probability of fault issues.
 We also trace the simulation result to confirm the extended system model without fault keeps consistence of the nominal system model.
@@ -100,17 +102,26 @@ to show its advantage in analyzing faulty behavior of safety-critical systems in
 \input{exprval}
 
 \section{Conclusions and Future Work}
-This paper proposes a model of the wheel brake system based on behavioral fault modeling approach as well as a verification technique based on statistical model checking. Our design tightly follows the AIR6110 standard with a result of four architectures. The work of\cite{aadl14}\cite{aadl} focused on an extension of AADL Error Model called Annex, using WBS as an example. They find it hard to adding faults to existing components, and the integration process can obscure the nominal behaviors of the model. The paper\cite{cav15} proposes a formal modeling and analysis of WBS based on an integration of serveral approaches including OCRA, NuXmv and xSAP. They using a cluster of machines with massive memories and time, but also faces with time out problems during computation. However (1) our model is more easier to extend/modify due to the use of the component-based design approach, (2) the integrated model is more concrete due to the use of our behavioral fault modeling approach, (3) we are capable to retreive stochastic informations on the wheel brake system.
+This paper proposes a model of the wheel brake system based on behavioral fault modelling approach as well as a verification technique based on statistical model checking. Our design tightly follows the AIR6110 with a result of four architectures. As far as we know, this is the first BIP model for wheel brake system. Taking the advantages of nominal BIP model and stochastic systems, our extended BIP model is (1) more easier to extend/modify, (2) capable to retreive stochastic fault informations on the wheel brake system, (3) able to conduct MBSA in SBIP tool chains using SMC approach.
 
-\emph{Discussion} It is hard to generate a formal WBS model by using the AIR6110 document without any background knowledge or help from engineers. Also, functional modeling and fault-tree-based safety analysis are often conducted separately.  The construction of fault trees is an engineering practice which requires a deep understanding with the complex real-world system behavior. But the experienced engineers are always not able to learn the state of the art formal notations or proof knowledge. The engineers need models with clear graphical representation and semantics. It is better for them to use a modeling method which supports the reuse of components because the architectures are always similar with each other during the system iteration.
+\begin{comment}
+The work of\cite{aadl14}\cite{aadl} focused on an extension of AADL Error Model called Annex, using WBS as an example. They find it hard to adding faults to existing components, and the integration process can obscure the nominal behaviors of the model. The paper\cite{cav15} proposes a formal modelling and analysis of WBS based on an integration of serveral approaches including OCRA, NuXmv and xSAP. They using a cluster of machines with massive memories and time, but also faces with time out problems during computation. However (1) our model is more easier to extend/modify due to the use of the component-based design approach, (2) the integrated model is more concrete due to the use of our behavioral fault modelling approach, (3) we are capable to retreive stochastic informations on the wheel brake system.
+\end{comment}
+
+\emph{Discussion} It is hard to generate a formal WBS model by using the AIR6110 document without any background knowledge or help from engineers. Also, functional modelling and fault-tree-based safety analysis are often conducted separately.  The construction of fault trees is an engineering practice which requires a deep understanding with the complex real-world system behavior. But the experienced engineers are always not able to learn the state of the art formal notations or proof knowledge. The engineers need models with clear graphical representation and semantics. It is better for them to use a modelling method which supports the reuse of components because the architectures are always similar with each other during the system iteration.
 
 The scalability of our approach depends on the fault trees. In the case study of this paper, we reuse the leaf nodes between different fault trees. With the increasing scale of system, the reuse of behavioral fault components will become more urgent.
 
 The probability distribution of failure rate also matters the runtime verification. The bathtub curve is generally regarded as a particular form of the failure rate function. But the failure rate is generally assumed constant for complex units, systems and electronics, especially in aerospace standards. The exponential distribution is suitable for situations where the failure rate of occurrence is constant. But it is continuous and not a built-in function of SBIP. So we would like to use the discrete uniform distribution for runtime verification.
 
-\emph{Future work.}  We want to use model checking as a formal method for verifying the correctness of modified BIP models. As a part of this work, the estimation of S18-WBS-R-6108 has proved the integration of green hydraulic pump with faulty behavior is correct. Nevertheless, we hope to reuse other model checking algorithms to do this verification, this may need an encoding from BIP to other languages(e.g.\ NuXmv).
+\emph{Future work.}  We want to use model checking as a formal method for verifying the correctness of modified BIP models. As a part of this work, the estimation of S18-WBS-R-6108 has proved the integration of green hydraulic pump with faulty behavior is correct. Nevertheless, we hope to reuse other model checking algorithms to do this verification, this may need an encoding from BIP to other languages (e.g.\ NuXmv).
 
-Another direction is improving the simulation process to estimate the probability of rare event, i.e.\ failure rate of S18-WBS-R-0321'. The requirements of most complex safety-critical systems can also be considered as the negation of safety properties which are rare events. A predictable method is using some state-of-the-art methods\cite{rarevent1}\cite{rarevent2} to reduce the scale of sample traces.
+Another direction is improving the simulation process to estimate the probability of rare event, i.e.\ failure rate of S18-WBS-R-0321. The requirements of most complex safety-critical systems can also be considered as the negation of safety properties which are rare events. A predictable method is using some state-of-the-art methods\cite{rarevent1}\cite{rarevent2} to reduce the scale of sample traces.
+
+\section*{Acknowledgment}
+
+This work is supported by the NSFCs of China (No.61872144 and No. 61872146). The author wish to thank: (1) Braham Lotfi Mediouni from RSD Grenoble Research Center for helpful discussion of SBIP, (2) Sam Procter from Software Engineering Institute of Carnegie Mellon University for helpful discussion of the AIR6110 wheel brake system case study.
+
 %
 % ---- Bibliography ----
 %
