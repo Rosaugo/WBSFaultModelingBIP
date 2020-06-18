@@ -9,8 +9,8 @@ In this section, we describe how to integrate a component's faulty behavior from
 
 \textbf{Example 1.} We take a commonly used valve component as an example. In general, a valve is used to control the passage of hydraulic pressure. When the valve is open, the output hydraulic pressure is equal to the input hydraulic pressure, indicates that the valve currently allows hydraulic pressure to pass. When the valve is close, the output hydraulic pressure is zero, indicates a rejection of hydraulic passage. We model the nominal behavior of valve in BIP, as shown in Fig.~\ref{example_BIP_nominal}.
 
-\begin{figure}[htbp]
-	\centerline{\includegraphics[width=115mm]{figure/example_origin.eps}}
+\begin{figure}[t]
+	\centerline{\includegraphics[width=65mm]{figure/example_origin.eps}}
 	\caption{The nominal behavior of valve in BIP}
 	\label{example_BIP_nominal}
 \end{figure}
@@ -53,9 +53,9 @@ For stuck-at-open fault, the output hydraulic pressure is always the same as the
 
 \emph{The integration steps.} We conclude our methodology of integrating the leaf node of fault tree into the valve component shown in Fig.~\ref{example_BIP_nominal} by the following steps:
 
-Step1: Decompose the fault tree. We pay attention to those basic events which may cause the top level fault. In this example, we consider the loss of valve as leaf node decomposed from the fault tree.
+Step 1: Decompose the fault tree. We pay attention to those basic events which may cause the top level fault. In this example, we consider the loss of valve as leaf node decomposed from the fault tree.
 
-Step2: Deduce the faulty behaviors from the leaf node. 
+Step 2: Deduce the faulty behaviors from the leaf node. 
 We deduce faulty behaviors from the basic event \emph{loss of valve}. We take two faulty behaviors into consideration, they are introduced as follows:
 
 \begin{itemize}
@@ -63,7 +63,7 @@ We deduce faulty behaviors from the basic event \emph{loss of valve}. We take tw
 	\item For stuck-at-close fault, the output hydraulic pressure is always zero.
 \end{itemize}
 
-Step3: Generate BIP component with faulty behavior. Comparing with the nominal behavior valve component, the valves with stuck-at-open/close fault show an eternally unblocked/blocked for both \emph{Open} and \emph{Close} status respectively. According to step 3, the faulty behavior valve components are generated as follows:
+Step 3: Generate BIP component with faulty behavior. Comparing with the nominal behavior valve component, the valves with stuck-at-open/close fault show an eternally unblocked/blocked for both \emph{Open} and \emph{Close} status respectively. According to step 3, the faulty behavior valve components are generated as follows:
 
 \begin{itemize}
 	\item For both faulty behavior components, the transition among \emph{Open} and \emph{Close} status will no longer change the value of \emph{PreOut}.
@@ -71,11 +71,11 @@ Step3: Generate BIP component with faulty behavior. Comparing with the nominal b
 	\item For stuck-at-close component, the action of transition from status \emph{Open} to \emph{Open} under event \emph{Input} is \emph{PreOut:=0}, just the same as transition from status \emph{Close} to \emph{Close} under event \emph{Input}.
 \end{itemize}
 
-Step4: Design a manager component for deciding and monitoring the activition of both fault and nominal behavior components. In this example, we design a manager component with three states, each of them represents one kind of valve status. Once the state execute a self circulation, an event will be sent to the corresponding behavioral component to activate it. The three states switch through internal port \emph{Trigger} which is controlled by BIP enigne to support a stochastic process of faulty behavior occured during simulation.
+Step 4: Design a manager component for deciding and monitoring the activition of both fault and nominal behavior components. In this example, we design a manager component with three states, each of them represents one kind of valve status. Once the state execute a self circulation, an event will be sent to the corresponding behavioral component to activate it. The three states switch through internal port \emph{Trigger} which is controlled by BIP enigne to support a stochastic process of faulty behavior occured during simulation.
 
-Step5: Since the original component has been integrated with faulty behavior, it keeps the same external port for connection  as before but has been extended a lower level to contain various of components designed in the previous steps. Modifying the upward connectors from components to the compound and extending each component with an external port receiving activation event. Confirming the extended system model without fault keeps consistence of the norminal system model through observing their transition of status, internal and external ports and connectors (This will be reconfirmed by tracing the simulation result).
+Step 5: Since the original component has been integrated with faulty behavior, it keeps the same external port for connection  as before but has been extended a lower level to contain various of components designed in the previous steps. Modifying the upward connectors from components to the compound and extending each component with an external port receiving activation event. Confirming the extended system model without fault keeps consistence of the norminal system model through observing their transition of status, internal and external ports and connectors (This will be reconfirmed by tracing the simulation result).
 
-\begin{figure}[b]
+\begin{figure}[t]
 	\centerline{\includegraphics[width=125mm]{figure/Example.eps}}
 	\caption{An integration example of common valve component}
 	\label{Example}
@@ -90,8 +90,8 @@ Fig.~\ref{WBS_BIP_fault_tree} shows a fault tree for ``Loss of wheel braking" ev
 
 We deduce the faulty behaviors for every component from the fault tree shown in Fig.~\ref{WBS_BIP_fault_tree}. Also, we consider the compound \emph{BSCU Channel 1/2} as the lowest level of component for the sake of brevity. A statistics of deduced faulty behaviors is given in Table.~\ref{tab1}. The selector valve's faulty behavior is loss of its selector function, while each BSCU channel has three faulty behaviors including ``loss of power supply", ``loss of monitor system" and ``command system does not operate".
 
-\begin{figure}[htbp]
-	\centerline{\includegraphics[width=125mm]{figure/fault_tree.eps}}
+\begin{figure}[t]
+	\centerline{\includegraphics[width=105mm]{figure/fault_tree.eps}}
 	\caption{Fault tree for a loss of WBS occurrence under ARCH4}
 	\label{WBS_BIP_fault_tree}
 \end{figure}

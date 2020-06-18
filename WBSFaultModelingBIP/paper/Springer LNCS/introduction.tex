@@ -2,7 +2,7 @@
 \section{Introduction}
 
 In response to the strong demand for minimizing errors during the development of safety critical systems such as aircraft and aerospace systems \cite{lctes10,issrew12},
-  there is a growing trend to advocate the model based systen design and safety analysis approach.
+  there is a growing trend to advocate the model based system design and safety analysis approach.
   For instance,  this approach has been highly recommended in the SAE (Society of Automotive Engineers) guidances for the development of complex aerospace systems 
   (i.e., Aerospace Recommended Practice ARP4754A \cite{arp4754a} and ARP4761 \cite{arp4761}).
   Particularly, SAE provides an aircraft wheel brake system (WBS) as an example of applying ARP4754A and ARP4761 into practice 
@@ -16,13 +16,16 @@ In response to the strong demand for minimizing errors during the development of
  and then augments the nominal system model with fault models.
  This extended system model can then be used to study the safety and reliability properties when  in presence of one or more faults.
 
-BIP is a framework, language and tool for specifying components and component interactions. 
- BIP performs well in generating executions of hierarchical components based systems. 
- BIP also provides a type definition for each component and graphical representation for BIP model to decrease the complexity of system design.
- BIP is a tool for specifying components and component interactions. 
- One of the very attractive features of BIP is its ability to generate executions of composite systems.  
- Another advantage of BIP is that it permits to give a very detailed description of each component. 
- BIP also provides graphical and texture representation for engineers to decrease the complexity of the design.
+In some early work\cite{bip1,bip2}, BIP is proposed for engineers to carry out model based system design and model based safety analysis.
+BIP is a framework, language and tool for specifying components and component interactions.
+It is mainly targeted for rigorous design of component-based systems, that is, not only formal modelling and analysis but also correct-by-construction implementation and deployment.
+BIP uses various engines to generate executions of hierarchical components based systems and performs well.
+Till now, the use of BIP for model based safety analysis has remained at the verification and simulation of nominal system model.
+Methods of using BIP for model based safety analysis needs to be further developed.
+
+\begin{comment}
+BIP also provides a type definition for each component and graphical representation for BIP model to decrease the complexity of system design.
+\end{comment}
 
 %For the extended model, we suggest \emph{stochastic abstraction}\cite{stoabs} technique to import probability distributions into some of the components having stochastic process transiting between nominal behavior and faulty behavior.
 %To compute the probability for the system to satisfy the specification, the Statistical Model Checking\cite{vmcai04}\cite{cav04}\cite{cmu04} approach is an efficiently choice. The SMC approach simulates the system and use the statistic results to verify the given properties.
@@ -31,7 +34,7 @@ BIP is a framework, language and tool for specifying components and component in
 
 In the past few years, a few researches use WBS as a case study to propose their promotion on model-based safety analysis.
  Some of them find it hard to add faults to existing components, and the integration process can obscure the nominal behaviors of the model. 
- The paper\cite{cav15} proposes a formal modelling and analysis of WBS based on an integration of serveral approaches including OCRA, NuXmv and xSAP. 
+ The paper\cite{cav15} proposes a formal modelling and analysis of WBS based on an integration of serveral approaches including OCRA, NuXmv and xSAP.
  They using a cluster of machines with massive memories and time, but also faces with time out problems during computation. 
  It is desired to propose verification method using less time and memory on an extendable and understandable WBS model.
 
@@ -46,7 +49,7 @@ In this work, we propose to apply the BIP framework for fault modelling and mode
  We also propose a method to derive fault models from fault trees, and integrate nominal system model with fault models. 
  The extended system model is a stochastic system where faulty behaviors and failure rate are both manifested in the model.
 
-\item We propose to use the Statistical Model Checking\cite{vmcai04}\cite{cav04}\cite{cmu04} approach to simulate the failure injected stochastic WBS model,
+\item We propose to use the Statistical Model Checking\cite{vmcai04,cav04,cmu04} approach to simulate the failure injected stochastic WBS model,
  and automatically verify whether the BIP system model satisfies the AIR6110 requirements using the statistical model checker SBIP for BIP \cite{sbip18}.
  We report interesting findings and confirm the necessity of the iteration in AIR6110 in the experiments of comparing serveral WBS architectures. 
  We also observe the performance of SBIP during probability estimation and give some suggestions for using BIP and SBIP tool chains.

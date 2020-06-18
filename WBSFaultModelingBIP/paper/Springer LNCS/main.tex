@@ -114,9 +114,9 @@ The scalability of our approach depends on the fault trees. In the case study of
 
 The probability distribution of failure rate also matters the runtime verification. The bathtub curve is generally regarded as a particular form of the failure rate function. But the failure rate is generally assumed constant for complex units, systems and electronics, especially in aerospace standards. The exponential distribution is suitable for situations where the failure rate of occurrence is constant. But it is continuous and not a built-in function of SBIP. So we would like to use the discrete uniform distribution for runtime verification.
 
-\emph{Future work.}  We want to use model checking as a formal method for verifying the correctness of modified BIP models. As a part of this work, the estimation of S18-WBS-R-6108 has proved the integration of green hydraulic pump with faulty behavior is correct. Nevertheless, we hope to reuse other model checking algorithms to do this verification, this may need an encoding from BIP to other languages (e.g.\ NuXmv).
+\emph{Future work.}  We want to use model checking as a formal method for verifying the correctness of modified BIP models. As a part of this work, the estimation of S18-WBS-R-6108 has proved the integration of green hydraulic pump with faulty behavior is correct. Nevertheless, we hope to reuse other model checking algorithms to do this verification, this may need an encoding from BIP to other languages (e.g., NuXmv).
 
-Another direction is improving the simulation process to estimate the probability of rare event, i.e.\ failure rate of S18-WBS-R-0321. The requirements of most complex safety-critical systems can also be considered as the negation of safety properties which are rare events. A predictable method is using some state-of-the-art methods\cite{rarevent1}\cite{rarevent2} to reduce the scale of sample traces.
+Another direction is improving the simulation process to estimate the probability of rare event, i.e.\ failure rate of S18-WBS-R-0321. The requirements of most complex safety-critical systems can also be considered as the negation of safety properties which are rare events. A predictable method is using some state-of-the-art methods\cite{rarevent1,rarevent2} to reduce the scale of sample traces.
 
 \section*{Acknowledgment}
 
