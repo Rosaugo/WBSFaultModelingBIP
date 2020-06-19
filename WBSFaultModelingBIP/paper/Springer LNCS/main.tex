@@ -102,13 +102,13 @@ to show its advantage in analyzing faulty behavior of safety-critical systems in
 \input{exprval}
 
 \section{Conclusions and Future Work}
-This paper proposes a model of the wheel brake system based on behavioral fault modelling approach as well as a verification technique based on statistical model checking. Our design tightly follows the AIR6110 with a result of four architectures. As far as we know, this is the first BIP model for wheel brake system. Taking the advantages of nominal BIP model and stochastic systems, our extended BIP model is (1) more easier to extend/modify, (2) capable to retreive stochastic fault informations on the wheel brake system, (3) able to conduct MBSA in SBIP tool chains using SMC approach.
+This paper proposes a model of the wheel brake system based on behavioral fault modelling approach as well as a verification technique based on statistical model checking. Our design tightly follows the AIR6110 with a result of four architectures. As far as we know, this is the first BIP model for wheel brake system. Taking the advantages of nominal BIP model and stochastic systems, our extended BIP model is (1) more easier to extend/modify, (2) capable to retrieve stochastic fault information on the wheel brake system, (3) able to conduct MBSA in SBIP tool chains using SMC approach.
 
 \begin{comment}
 The work of\cite{aadl14}\cite{aadl} focused on an extension of AADL Error Model called Annex, using WBS as an example. They find it hard to adding faults to existing components, and the integration process can obscure the nominal behaviors of the model. The paper\cite{cav15} proposes a formal modelling and analysis of WBS based on an integration of serveral approaches including OCRA, NuXmv and xSAP. They using a cluster of machines with massive memories and time, but also faces with time out problems during computation. However (1) our model is more easier to extend/modify due to the use of the component-based design approach, (2) the integrated model is more concrete due to the use of our behavioral fault modelling approach, (3) we are capable to retreive stochastic informations on the wheel brake system.
 \end{comment}
 
-\emph{Discussion} It is hard to generate a formal WBS model by using the AIR6110 document without any background knowledge or help from engineers. Also, functional modelling and fault-tree-based safety analysis are often conducted separately.  The construction of fault trees is an engineering practice which requires a deep understanding with the complex real-world system behavior. But the experienced engineers are always not able to learn the state of the art formal notations or proof knowledge. The engineers need models with clear graphical representation and semantics. It is better for them to use a modelling method which supports the reuse of components because the architectures are always similar with each other during the system iteration.
+\emph{Discussion} It is hard to generate a formal WBS model by using the AIR6110 document without any background knowledge or help from engineers. Also, functional modelling and fault-tree-based safety analysis are often conducted separately.  The construction of fault trees is an engineering practice which requires a deep understanding with the complex real-world system behavior. But the experienced engineers are always not able to learn the state-of-the-art formal notations or proof knowledge. The engineers need models with clear graphical representation and semantics. It is better for them to use a modelling method which supports the reuse of components because the architectures are always similar with each other during the system iteration.
 
 The scalability of our approach depends on the fault trees. In the case study of this paper, we reuse the leaf nodes between different fault trees. With the increasing scale of system, the reuse of behavioral fault components will become more urgent.
 
@@ -120,7 +120,7 @@ Another direction is improving the simulation process to estimate the probabilit
 
 \section*{Acknowledgment}
 
-This work is supported by the NSFCs of China (No.61872144 and No. 61872146). The author wish to thank: (1) Braham Lotfi Mediouni from RSD Grenoble Research Center for helpful discussion of SBIP, (2) Sam Procter from Software Engineering Institute of Carnegie Mellon University for helpful discussion of the AIR6110 wheel brake system case study.
+This work is supported by the NSFCs of China (No.61872144 and No. 61872146). The authors wish to thank: (1) Braham Lotfi Mediouni from RSD Grenoble Research Center for helpful discussion of SBIP, (2) Sam Procter from Software Engineering Institute of Carnegie Mellon University for helpful discussion of the AIR6110 wheel brake system case study.
 
 %
 % ---- Bibliography ----
