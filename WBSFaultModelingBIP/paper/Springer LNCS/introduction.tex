@@ -3,7 +3,7 @@
 
 There is a growing trend to advocate the methodology of model based system design (MBSD) and model based safety analysis (MBSA),
  as a response to the strong demand for minimizing errors during the development of safety critical systems such as aircraft and aerospace systems \cite{lctes10,issrew12}.
- Generally speaking,  MBSD refers to the type of approach 
+ Generally speaking, MBSD refers to the type of approach 
  that uses an abstract system model to describe the nominal behavior and the system architecture involving both software and hardware components.
  When the system model is built with a formal modelling language, various system level analysis and verification can then be performed on this formal model to ensure the correctness of the design.
  Moreover, low level implementations can also be automatically derived from the design models through code generation.
@@ -22,16 +22,16 @@ BIP (Behavior-Interaction-Priority) \cite{bip1,bip2} is a component based framew
  Rigorous system design can be understood as the process that derives correct-by-construction implementations from high level system models automatically.
  BIP provides a formal modelling language that is expressive enough for describing both the functional behavior and the architecture of complex systems.
  It also provides a set of tools that automates the rigorous system design process.
- SBIP \cite{sbip18} is a statistical extension of BIP that supports formal modeling and statistical analysis of systems exhibiting stochastic behaviors.
- Currently, both BIP and SBIP are widely used in the modelling and analysis of nominal system models (i.e., system models withou faulty behaviors).
+ SBIP \cite{sbip18} is a statistical extension of BIP that supports formal modelling and statistical analysis of systems exhibiting stochastic behaviors.
+ Currently, both BIP and SBIP are widely used in the modelling and analysis of nominal system models (i.e., system models without faulty behaviors).
 % In this work, we apply the BIP and SBIP framework for model based safety analysis.
 
 In this work, we propose to apply the BIP framework for fault modelling and safety analysis 
  and perform a case study on the aircraft wheel brake system provided in SAE AIR6110 \cite{air6110}.
  In a related work \cite{cav15}, WBS has been also investigated as a case study to promote their approach to model based safety analysis.
- However,  in their approach fault models are injected to the formal system model in a monolithic manner 
- such that the integration process can obscure the nominal behavior of the system and creats additional overheads for safety analysis.
- Our fault mdoelling is modular and features a clear seperation between nominal behavior and fault behavior that makes the WBS model extendable and understandable.
+ However, in their approach fault models are injected to the formal system model in a monolithic manner 
+ such that the integration process can obscure the nominal behavior of the system and creat additional overheads for safety analysis.
+ Our fault modelling is modular and features a clear separation between nominal behavior and fault behavior that makes the WBS model extendable and understandable.
  We also adopt the statistical approach to model checking the extended system model that uses less time and memory.
 % The paper proposes a formal modelling and analysis of WBS based on an integration of several approaches including OCRA, NuXmv and xSAP.
 % They using a cluster of machines with massive memories and time, but also faces with time out problems during computation. 
