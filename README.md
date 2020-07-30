@@ -1,2 +1,3 @@
-# ControlSoftwareCaseStudyBIP
-A case study on engine control software of airplane in BIP
+# WBSFaultModelingBIP
+A case study on AIR6110 Wheel Brake System of behavioral fault modelling and analysis with BIP
+ICA3PP 2020
